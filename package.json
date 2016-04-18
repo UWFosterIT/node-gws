@@ -1,0 +1,54 @@
+{
+  "name": "uwgws",
+  "version": "0.5.0",
+  "description": "Client Library for University of Washington's Groups Web Service",
+  "bugs:": {
+    "url": "https://github.com/UWFosterIT/node-gws/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/UWFosterIT/node-gws/"
+  },
+  "author": "Marc Miles",
+  "main": "./lib/index.js",
+  "keywords": [
+    "uw",
+    "groups",
+    "web",
+    "service",
+    "pws"
+  ],
+  "dependencies": {
+    "cheerio": "^0.20.0",
+    "micro-cache": "^2.3.0",
+    "query-string": "^1.0.0",
+    "request": "^2.53.0",
+    "underscore": "^1.8.3"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.3.17",
+    "babel-core": "^6.3.17",
+    "babel-eslint": "^6.0.2",
+    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-stage-0": "^6.5.0",
+    "babel-preset-stage-1": "^6.5.0",
+    "babel-register": "^6.3.13",
+    "chai": "^3.4.1",
+    "debug": "^2.2.0",
+    "eslint": "^2.5.3",
+    "mocha": "^2.3.4",
+    "sinon": "^1.17.2",
+    "sinon-chai": "^2.8.0"
+  },
+  "scripts": {
+    "copy": "cp templates lib/ -R",
+    "build": "npm run copy && ./node_modules/.bin/babel --presets es2015 -d lib src --source-maps inline",
+    "lint": "eslint src/**/*.js; exit 0;",
+    "test": "npm run build && ./node_modules/.bin/mocha --bail --reporter dot --compilers js:babel-register --require babel-polyfill test/unit/*.js",
+    "debug": "LOG_LEVEL=debug npm run build && ./node_modules/.bin/mocha --debug-brk --bail --reporter dot --compilers js:babel-register --require babel-polyfill test/unit/*.js"
+  },
+  "engines": {
+    "node": ">= v0.12.0"
+  },
+  "license": "MIT"
+}

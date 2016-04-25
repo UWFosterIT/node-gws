@@ -38,17 +38,43 @@ let result = await uwgws.membership.get(options);
 console.log(result);
 ```
 
+### Using a local cache
+
+The ``cacheMode`` can be set to any one of the following modes.  This uses the ``micro-cache`` node module as a local file system cache.  
+
+- wild: all requests go out to the internet, don't load anything from cache, doesn't save anything.
+- dryrun: Loads files from cache if exists, does http calls when cache doesn't exist, doesn't save to the cache.
+- record: Loads files from the cache and saves new ones to the cache.
+
 ### Logging
 This module uses ``winston`` for all logging.  Set an environment variable to a valid log level such as ``LOG_LEVEL=debug node yourscript.js``.
 
-## Development
-For linting, this assumes you have ``eslint`` and ``babel-eslint`` installed globally ``npm install eslint@2.x babel-eslint@next -g``.
+## Endpoint Implementation
+All links below go to the official service documentation.  The code block refers to it's implementation in this module.
 
+#### Fully Supported
+All of the ``uwgws`` methods return a promise for a result object that contains the following elements:
+
+Return Object Element | Meaning
+---------- | ---------------
+``statusCode`` | This element represents the HTTP statusCode of the API response.
+``data`` | This element represents the data returned by the GWS API. This element is the raw xhtml response from the server if the request HTTP response is something other than the expected XHTML.
+
+In most methods, the response body xhtml is parsed and returned in ``data`` element as JSON. This means most of the original body is removed to provide cleaner access to only the data you need.
+
+All of the ``options`` parameters are outlined in ``sr/modules/[endpoint]``
+
+Endpoint  | Implementation
+------------- | -------------
+[Membership - Get](https://wiki.cac.washington.edu/display/infra/Groups+WebService+Get+Members)  | ``uwgws.membership.get(options)``
+[Membership - Update](https://wiki.cac.washington.edu/display/infra/Groups+WebService+Update+Members)  | ``uwgws.membership.add(options)``
+[Membership - Delete](https://wiki.cac.washington.edu/display/infra/Groups+WebService+Delete+Members)  | ``uwgws.membership.del(options)``
+
+## Development
 Copy ``test/setup/config-sample.js`` to ``test/setup/config.js`` and edit values as needed. Use the ``npm`` commands indicated in ``package.json``.
 
     npm build
     npm test
-    npm lint
 
 ## TO DO
 Right now, this is ``0.x.0`` because of the minimal endpoint implementation.  Next up will be the group create endpoint.

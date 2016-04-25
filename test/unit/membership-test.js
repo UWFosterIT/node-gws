@@ -26,6 +26,33 @@ describe('Membership', function () {
       expect(result.data.length).to.be.within(10, 20);
     }));
   });
+
+  describe('Add', () => {
+    it('should add a new member to the group', mochaAsync(async () => {
+      let options = {
+        id:    'uw_foster_it_developers_nodegws-test',
+        netid: 'milesm'
+      };
+
+      let result = await uwgws.membership.add(options);
+      expect(result.statusCode).to.equal(200);
+    }));
+  });
+
+  describe('Delete', () => {
+    it('should delete a member from the group', mochaAsync(async () => {
+      let options = {
+        id:    'uw_foster_it_developers_nodegws-test',
+        netid: 'milesm'
+      };
+
+      // add one and then delete
+      let result = await uwgws.membership.add(options);
+      expect(result.statusCode).to.equal(200);
+      result = await uwgws.membership.del(options);
+      expect(result.statusCode).to.equal(200);
+    }));
+  });
 });
 
 // TO DO

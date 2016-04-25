@@ -30,10 +30,26 @@ class Service {
   _put(endpoint, xhtml, etag) {
     return new Promise((fulfill, reject) => {
       let options = this._options(endpoint);
-      _.extend(options.headers, etag);
-      options.body = xhtml;
+      if (xhtml) {
+        _.extend(options.headers, etag);
+        options.body = xhtml;
+      }
 
       request.put(options, (err, response, body) => {
+        if (err) {
+          reject(err);
+        }
+
+        fulfill(this._buildResult(response, body));
+      });
+    });
+  }
+
+  _del(endpoint) {
+    return new Promise((fulfill, reject) => {
+      let options = this._options(endpoint);
+
+      request.del(options, (err, response, body) => {
         if (err) {
           reject(err);
         }

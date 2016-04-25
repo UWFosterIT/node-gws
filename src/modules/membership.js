@@ -6,7 +6,7 @@ class Membership extends Service {
     super(config);
   }
 
-  get(opt, cb) {
+  get(opt) {
     let membership = 'member';
     if (opt.effective) {
       membership = 'effective_member';
@@ -28,6 +28,20 @@ class Membership extends Service {
         });
 
         result.data = members;
+        return result;
+      });
+  }
+
+  add(opt) {
+    return this._put(`group/${opt.id}/member/${opt.netid}`)
+      .then((result) => {
+        return result;
+      });
+  }
+
+  del(opt) {
+    return this._del(`group/${opt.id}/member/${opt.netid}`)
+      .then((result) => {
         return result;
       });
   }

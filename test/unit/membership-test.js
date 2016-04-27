@@ -54,11 +54,3 @@ describe('Membership', function () {
     }));
   });
 });
-
-// TO DO
-// Test Setup
-// ...add members
-// ...assert correct number of members
-// ...add subgroup as member
-// ...add members to subgroup
-// ...assert correct number of effect members to parent

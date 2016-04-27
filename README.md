@@ -58,23 +58,21 @@ All of the ``uwgws`` methods return a promise for a result object that contains 
 Return Object Element | Meaning
 ---------- | ---------------
 ``statusCode`` | This element represents the HTTP statusCode of the API response.
-``data`` | This element represents the data returned by the GWS API. This element is the raw xhtml response from the server if the request HTTP response is something other than the expected XHTML.
+``xhtml`` | This is the raw response from the server
+``data`` | This element represents parsed XHTML into JSON when possible for GET requests.
 
-In most methods, the response body xhtml is parsed and returned in ``data`` element as JSON. This means most of the original body is removed to provide cleaner access to only the data you need.
-
-All of the ``options`` parameters are outlined in ``sr/modules/[endpoint]``
+All of the ``options`` parameters are outlined in ``src/modules/[endpoint]``.
 
 Endpoint  | Implementation
 ------------- | -------------
 [Membership - Get](https://wiki.cac.washington.edu/display/infra/Groups+WebService+Get+Members)  | ``uwgws.membership.get(options)``
 [Membership - Update](https://wiki.cac.washington.edu/display/infra/Groups+WebService+Update+Members)  | ``uwgws.membership.add(options)``
 [Membership - Delete](https://wiki.cac.washington.edu/display/infra/Groups+WebService+Delete+Members)  | ``uwgws.membership.del(options)``
+[Group - Create](https://wiki.cac.washington.edu/display/infra/Groups+WebService+Create+Group)  | ``uwgws.group.create(options)``
+[Group - Delete](https://wiki.cac.washington.edu/display/infra/Groups+WebService+Delete+Group)  | ``uwgws.group.del(options)``
 
 ## Development
 Copy ``test/setup/config-sample.js`` to ``test/setup/config.js`` and edit values as needed. Use the ``npm`` commands indicated in ``package.json``.
 
     npm build
     npm test
-
-## TO DO
-Right now, this is ``0.x.0`` because of the minimal endpoint implementation.  Next up will be the group create endpoint.

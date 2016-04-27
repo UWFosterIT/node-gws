@@ -1,6 +1,6 @@
 {
   "name": "uwgws",
-  "version": "0.6.1",
+  "version": "1.0.0",
   "description": "Client Library for University of Washington's Groups Web Service",
   "bugs:": {
     "url": "https://github.com/UWFosterIT/node-gws/issues"
@@ -21,7 +21,6 @@
   "dependencies": {
     "cheerio": "^0.20.0",
     "micro-cache": "^2.3.0",
-    "query-string": "^1.0.0",
     "request": "^2.72.0",
     "underscore": "^1.8.3",
     "winston": "^2.2.0"

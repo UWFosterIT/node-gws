@@ -9,17 +9,6 @@ global.expect = chai.expect;
 global.config = config;
 global.uwgws = uwgws;
 
-global.mochaAsync = (fn) => {
-  return async (done) => {
-    try {
-      await fn();
-      done();
-    } catch (err) {
-      done(err);
-    }
-  };
-};
-
 beforeEach(function () {
   this.sandbox = sinon.sandbox.create();
   this.stub = this.sandbox.stub.bind(this.sandbox);

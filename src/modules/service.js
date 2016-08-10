@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle*/
 import fs      from 'fs';
 import path    from 'path';
 import _       from 'underscore';
@@ -5,9 +6,9 @@ import request from 'request';
 
 class Service {
   constructor(config) {
-    this.config    = config;
-    this.log       = config.log;
-    this.cache     = config.cache;
+    this.config = config;
+    this.log = config.log;
+    this.cache = config.cache;
     this.templates = this._templates();
   }
 
@@ -22,9 +23,7 @@ class Service {
   _templates() {
     let cgPath = path.resolve(__dirname, '../templates/group-create.html');
 
-    return {
-      createGroup: fs.readFileSync(cgPath, 'utf-8')
-    };
+    return {createGroup: fs.readFileSync(cgPath, 'utf-8')};
   }
 
   _put(endpoint, xhtml, etag) {

@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle*/
 import cheerio from 'cheerio';
 import Service from './service';
 
@@ -40,6 +41,17 @@ class Membership extends Service {
   }
 
   del(opt) {
+    if (!opt.netid) {
+      /* eslint-disable key-spacing */
+      return {
+        xhtml:      '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">' +
+                    '<html xmlns="http://www.w3.org/1999/xhtml">' +
+                    '<head><title>Bad Request</title></head>' +
+                    '<body>Member delete must include a list of id(s).</body></html>',
+        statusCode: 400
+      };
+      /* eslint-enable key-spacing */
+    }
     return this._del(`group/${opt.id}/member/${opt.netid}`)
       .then((result) => {
         return result;

@@ -1,6 +1,6 @@
 {
   "name": "uwgws",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Client Library for University of Washington's Groups Web Service",
   "bugs:": {
     "url": "https://github.com/UWFosterIT/node-gws/issues"

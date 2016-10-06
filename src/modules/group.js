@@ -69,7 +69,7 @@ class Membership extends Service {
       'ETag':     ''
     };
 
-    // eval isnt bad, reading in an xhtml template as a string literal with opt
+    // eval isn't bad, reading in an xhtml template as a string literal with opt
     // see the respective template for how the options are used
     let xhtml = eval('`' + this.templates.createGroup + '`');
     return this._put(`group/${opt.id}`, xhtml, etag);
@@ -77,6 +77,10 @@ class Membership extends Service {
 
   del(opt) {
     return this._del(`group/${opt.id}`);
+  }
+
+  exchangeEnable(opt) {
+    return this._put(`group/${opt.id}/affiliate/email?status=active&sender=${opt.sender}`);
   }
 }
 

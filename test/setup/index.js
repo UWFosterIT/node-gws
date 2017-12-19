@@ -1,13 +1,13 @@
-import config from './config';
-import uwgws  from '../../lib/index';
-import chai from 'chai';
-import sinon from 'sinon';
-import sinonChai from 'sinon-chai';
+let chai      = require('chai');
+let config    = require('./config');
+let sinon     = require('sinon');
+let sinonChai = require('sinon-chai');
+let uwgws     = require('../../lib/index');
 
 chai.use(sinonChai);
 global.expect = chai.expect;
 global.config = config;
-global.uwgws = uwgws;
+global.uwgws  = uwgws;
 
 beforeEach(function () {
   this.sandbox = sinon.sandbox.create();
@@ -16,7 +16,7 @@ beforeEach(function () {
 });
 
 afterEach(function () {
-  this.stub = undefined;
-  this.spy = undefined;
+  this.stub = null;
+  this.spy  = null;
   this.sandbox.restore();
 });

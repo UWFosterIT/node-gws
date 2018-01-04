@@ -1,0 +1,6 @@
+---
+  globals:
+    'chai':   true
+    'config': true
+    'expect': true
+    'uwgws':  true

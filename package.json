@@ -22,6 +22,7 @@
     "cheerio": "^1.0.0-rc.2",
     "log4js": "^2.4.1",
     "micro-cache": "^2.3.0",
+    "query-string": "^5.0.1",
     "request": "^2.83.0",
     "underscore": "^1.8.3"
   },
@@ -35,7 +36,7 @@
   },
   "scripts": {
     "lint": "eslint lib/**/*.js; exit 0;",
-    "test": "mocha --bail --reporter dot test/unit/*.js --timeout 10000"
+    "test": "mocha --bail --reporter dot test/unit/*.js --timeout 15000"
   },
   "license": "MIT"
 }

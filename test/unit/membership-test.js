@@ -89,7 +89,7 @@ describe('Membership', () => {
       expect(result.data.length).to.be.within(10, 20);
     });
 
-    it('should return the memberhsip history for a group', async () => {
+    it('should return the membership history for a group', async () => {
       let query  = {id: group};
       let result = await uwgws.group.history(query);
 

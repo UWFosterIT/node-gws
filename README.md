@@ -69,6 +69,7 @@ Endpoint  | Implementation
 [Group - Create](https://wiki.cac.washington.edu/display/infra/Groups+WebService+Create+Group)  | `uwgws.group.create(options)`
 [Group - Delete](https://wiki.cac.washington.edu/display/infra/Groups+WebService+Delete+Group)  | `uwgws.group.del(options)`
 [Group - History](https://wiki.cac.washington.edu/display/infra/Groups+WebService+Get+History) | `uwgws.group.history(options)`
+[Search - Query](https://wiki.cac.washington.edu/display/infra/Groups+WebService+Search) | `uwgws.search.query(options)`
 
 ## Development
 Copy `test/setup/config-sample.js` to `test/setup/config.js` and edit values as needed. Use the `npm` commands indicated in `package.json`. It is recommended that you use the `eval` environment when developing/testing to avoid making lasting changes.

@@ -10,16 +10,14 @@ let options = {
   title:       'Foster GWS Test'
 };
 
-describe('Group', function () {
-  this.timeout(9000);
-
+describe('Group', () => {
   beforeEach(() => {
     uwgws.initialize(config);
   });
 
   before(async () => {
     uwgws.initialize(config);
-    await uwgws.group.del({id: options.name})
+    await uwgws.group.del({id: options.name});
   });
 
   it('should create a group', async () => {

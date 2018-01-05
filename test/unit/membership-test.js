@@ -69,7 +69,7 @@ describe('Membership', () => {
   });
 
   describe('Get', () => {
-    before(done => setTimeout(() => done(), 6000));
+    before(done => setTimeout(() => done(), 7000));
 
     it('should return membership', async () => {
       let options = {id: group};
@@ -88,5 +88,15 @@ describe('Membership', () => {
       let result = await uwgws.membership.get(options);
       expect(result.data.length).to.be.within(10, 20);
     });
+
+    it('should return the memberhsip history for a group', async () => {
+      let query  = {id: group};
+      let result = await uwgws.group.history(query);
+
+      expect(result.statusCode).to.eql(200);
+      expect(Array.isArray(result.data)).to.eql(true);
+      expect(result.data.length).to.eql(6);
+    });
+
   });
 });

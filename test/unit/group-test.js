@@ -53,6 +53,7 @@ describe('Group', () => {
     expect(result.message.length).to.eql(0);
   });
 
+  // Error handling
   it('should return an error when getting an invalid group', async () => {
     let query  = {id: nonGroup};
     let result = await uwgws.group.get(query);

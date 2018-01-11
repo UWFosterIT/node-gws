@@ -58,6 +58,8 @@ Return Object Element | Meaning
 `statusCode` | This element represents the HTTP statusCode of the API response.
 `xhtml` | This is the raw response from the server
 `data` | This element represents parsed XHTML into JSON when possible for GET requests.
+`error` | Boolean value represents the presence or absence of a business logic error. For example, adding an invalid netid to a valid group returns a `statusCode` of 200 but `error` = false
+`message` | Array of error messages if `error` is true. There will generally be only one value unless you attempted to add multiple invalid netids to a group. Then each invalid id will generate an item in the `message` array.
 
 All of the `options` parameters are outlined in `src/modules/[endpoint]`.
 
@@ -72,6 +74,15 @@ Endpoint  | Implementation
 [Search - Query](https://wiki.cac.washington.edu/display/infra/Groups+WebService+Search) | `uwgws.search.query(options)`
 
 ## Development
-Copy `test/setup/config-sample.js` to `test/setup/config.js` and edit values as needed. Use the `npm` commands indicated in `package.json`. It is recommended that you use the `eval` environment when developing/testing to avoid making lasting changes.
 
+    git clone git@github.com:UWFosterIT/node-gws.git
+    cd node-gws
+    # create a branch as needed. don't work on master
+    yarn install
+    cp test/setup/config-sample.js test/setup/config.js
+    # put appropriate values in the new config.js
     npm test
+
+It is recommended that you use the eval environment (https://eval.groups.uw.edu/group_sws/v2/) when developing/testing to avoid making lasting changes. And the search test will occassionaly timeout if you are using prod.
+
+Run `npm run lint` and fix any errors or warnings before checking in your code.

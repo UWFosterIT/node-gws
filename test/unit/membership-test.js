@@ -136,7 +136,7 @@ describe('Membership', () => {
         netid: 'schad'
       };
 
-      result = await uwgws.membership.del(options);
+      let result = await uwgws.membership.del(options);
       expect(result.statusCode).to.equal(200);
       expect(result.error).to.equal(false);
       expect(result.message.length).to.equal(0);
@@ -148,7 +148,7 @@ describe('Membership', () => {
         netid: 'schad'
       };
 
-      result = await uwgws.membership.del(options);
+      let result = await uwgws.membership.del(options);
       expect(result.statusCode).to.equal(200);
       expect(result.error).to.equal(false);
       expect(result.message.length).to.equal(0);
@@ -160,7 +160,7 @@ describe('Membership', () => {
         netid: 'schadfakenetidn'
       };
 
-      result = await uwgws.membership.del(options);
+      let result = await uwgws.membership.del(options);
       expect(result.statusCode).to.equal(200);
       expect(result.error).to.equal(false);
       expect(result.message.length).to.equal(0);
@@ -172,7 +172,7 @@ describe('Membership', () => {
         netid: 'dgale'
       };
 
-      result = await uwgws.membership.del(options);
+      let result = await uwgws.membership.del(options);
       expect(result.statusCode).to.equal(404);
       expect(result.error).to.equal(true);
       expect(result.message.length).to.equal(1);
@@ -184,7 +184,7 @@ describe('Membership', () => {
         netid: 'dgale'
       };
 
-      result = await uwgws.membership.del(options);
+      let result = await uwgws.membership.del(options);
       expect(result.statusCode).to.equal(401);
       expect(result.error).to.equal(true);
       expect(result.message.length).to.equal(1);

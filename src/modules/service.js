@@ -21,7 +21,7 @@ class Service {
   }
 
   _templates() {
-    let cgPath = path.resolve(__dirname, '../../templates/group-create.html');
+    let cgPath = path.resolve(__dirname, '../../../templates/group-create.html');
     return {createGroup: fs.readFileSync(cgPath, 'utf-8')};
   }
 

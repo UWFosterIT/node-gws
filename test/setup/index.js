@@ -2,7 +2,7 @@ let chai      = require('chai');
 let config    = require('./config');
 let sinon     = require('sinon');
 let sinonChai = require('sinon-chai');
-let uwgws     = require('../../lib/index');
+let uwgws     = require('../../lib/node/index');
 
 chai.use(sinonChai);
 global.expect = chai.expect;

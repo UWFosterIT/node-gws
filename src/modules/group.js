@@ -1,5 +1,5 @@
-let cheerio = require('cheerio');
-let Service = require('./service');
+import cheerio from 'cheerio';
+import Service from './service';
 
 class Group extends Service {
   constructor(config) {
@@ -107,4 +107,4 @@ class Group extends Service {
   }
 }
 
-module.exports = Group;
+export default Group;

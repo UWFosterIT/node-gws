@@ -1,25 +1,26 @@
-require('../setup');
+import '../setup';
 
-let options = {
-  admin:       'uw_foster_staff_it_developers',
-  contact:     'milesm',
-  description: 'Created as part of an automated test https://github.com/UWFosterIT/node-uwgws',
-  manager:     'uw_foster_undergrad_graduating_managers',
-  name:        'uw_foster_staff_it_developers_nodegws-test_group',
-  reader:      'uw_foster_undergrad_graduating_viewers',
-  title:       'Foster GWS Test'
-};
+describe('Group', function () {
 
-let nonGroup = 'fake_group_that_is_not_real_at_all';
-let unauthorizedGroup = 'uw_employee';
+  let options = {
+    admin:       'uw_foster_staff_it_developers',
+    contact:     'gabugabu',
+    description: 'Created as part of an automated test https://github.com/UWFosterIT/node-uwgws',
+    manager:     'uw_foster_undergrad_graduating_managers',
+    name:        'uw_foster_staff_it_developers_nodegws-test_group',
+    reader:      'uw_foster_undergrad_graduating_viewers',
+    title:       'Foster GWS Test'
+  };
 
-describe('Group', () => {
-  beforeEach(() => {
-    uwgws.initialize(config);
+  let nonGroup = 'fake_group_that_is_not_real_at_all';
+  let unauthorizedGroup = 'uw_employee';
+
+  beforeEach(async () => {
+    await uwgws.initialize(config);
   });
 
-  before(async () => {
-    uwgws.initialize(config);
+  before(async () =>  {
+    await uwgws.initialize(config);
     await uwgws.group.del({id: options.name});
   });
 
@@ -35,7 +36,7 @@ describe('Group', () => {
     let result = await uwgws.group.get(query);
     expect(result.error).to.eql(false);
     expect(result.message.length).to.eql(0);
-    expect(result.data.contact).to.eql('milesm');
+    expect(result.data.contact).to.eql('gabugabu');
     expect(result.data.description).to.eql('Created as part of an automated test https://github.com/UWFosterIT/node-uwgws');
     expect(result.data.title).to.eql('Foster GWS Test');
   });
@@ -67,7 +68,7 @@ describe('Group', () => {
 
     let getRes = await uwgws.group.get({id: 'uw_foster_staff_move'});
     expect(getRes.error).to.eql(false);
-    expect(getRes.data.contact).to.eql('milesm');
+    expect(getRes.data.contact).to.eql('gabugabu');
     expect(getRes.data.title).to.eql('Foster GWS Test');
 
     await uwgws.group.del({id: 'uw_foster_staff_move'});

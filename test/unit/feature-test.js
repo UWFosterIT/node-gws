@@ -7,42 +7,52 @@ describe('Initializing the module', () => {
 
     let invalid = {
       both: {
-        cert: 'sup',
-        key:  'nope'
+        certInfo: {
+          file: {
+            cert: 'sup',
+            key:  'nope'
+          }
+        }
       },
       cert: {
-        cert: '',
-        key:  'sup'
+        certInfo: {
+          file: {
+            cert: '',
+            key:  'sup'
+          }
+        }
       },
       key: {
-        cert: 'nope',
-        key:  ''
+        certInfo: {
+          file: {
+            cert: 'nope',
+            key:  ''
+          }
+        }
       },
       nothing: {
-        cert: '',
-        key:  ''
+        certInfo: {
+          file: {
+            cert: '',
+            key:  ''
+          }
+        }
       },
       withCert: {
-        cert: certFile,
-        key:  'sup'
+        certInfo: {
+          cert: certFile,
+          key:  'sup'
+        }
       },
     };
 
-    expect(function () {
-      uwgws.initialize(invalid.key);
-    }).to.throw(Error);
-    expect(function () {
-      uwgws.initialize(invalid.cert);
-    }).to.throw(Error);
-    expect(function () {
-      uwgws.initialize(invalid.nothing);
-    }).to.throw(Error);
-    expect(function () {
-      uwgws.initialize(invalid.withCert);
-    }).to.throw(Error);
-    expect(function () {
-      uwgws.initialize(invalid.both);
-    }).to.throw(Error);
+    return Promise.all([
+      expect(uwgws.initialize(invalid.key)).to.be.rejected,
+      expect(uwgws.initialize(invalid.cert)).to.be.rejected,
+      expect(uwgws.initialize(invalid.nothing)).to.be.rejected,
+      expect(uwgws.initialize(invalid.withCert)).to.be.rejected,
+      expect(uwgws.initialize(invalid.both)).to.be.rejected
+    ]);
   });
 });
 
@@ -50,8 +60,12 @@ describe('Initializing the module', () => {
   it('should not error', () => {
     let path = __dirname.replace('/unit', '/utils');
     let valid = {
-      cert: `${path}/dummy.crt`,
-      key:  `${path}/dummy.key`
+      certInfo: {
+        file: {
+          cert: `${path}/dummy.crt`,
+          key:  `${path}/dummy.key`
+        }
+      }
     };
 
     let result = null;

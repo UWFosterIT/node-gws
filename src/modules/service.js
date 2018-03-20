@@ -35,6 +35,7 @@ class Service {
 
       request.put(options, (err, response, body) => {
         if (err) {
+          console.log(err, response, body);
           reject(err);
         }
         fulfill(this._buildResult(response, body));

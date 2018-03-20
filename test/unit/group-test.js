@@ -68,7 +68,7 @@ describe('Group', function () {
 
     let getRes = await uwgws.group.get({id: 'uw_foster_staff_move'});
     expect(getRes.error).to.eql(false);
-    expect(getRes.data.contact).to.eql('milesm');
+    expect(getRes.data.contact).to.eql('gabugabu');
     expect(getRes.data.title).to.eql('Foster GWS Test');
 
     await uwgws.group.del({id: 'uw_foster_staff_move'});

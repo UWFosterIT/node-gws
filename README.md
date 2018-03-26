@@ -9,17 +9,31 @@ This module assumes you have gone through all the required steps to gain and ver
 ## USE
 First setup a config object to hold variables for your x509 cert and key as well as some optional caching of responses from the service. Cache options are detailed in the [micro-cache](https://www.npmjs.com/package/micro-cache) node module.
 
+The certInfo object should only contain either a file or an s3 object. If you include both, only the file object will be picked up.
+
 ```JavaScript
 let uwgws = require('../../lib/index');
 
 let config = {
   baseUrl:   'https://iam-ws.u.washington.edu:7443/group_sws/v2/',
-  cert:      '/home/you/yourcert.pem',
-  key:       '/home/you/your.key',
-  cacheMode: 'record',
-  cachePath: '/home/you/cache/',
   cacheExt:  '.json',
-  logLevel:  'info'
+  cacheMode: 'wild',
+  cachePath: './cache/',
+  certInfo:  {
+    file: {
+      cert: 'path-to-local/cert.pem',
+      key:  'path-to-local/key.key'
+    }
+    // s3: {
+    //   certBucket: 'uwfosterit.certs',
+    //   certKey:    'laps_cert.cer',
+    //   keyBucket:  'uwfosterit.certs',
+    //   keyKey:     'laps_cert.key'
+    // }
+  },
+  // cert:     '/home/gabugabu/.ssh/gabugabu.bschool.uwca.pem',
+  // key:      '/home/gabugabu/.ssh/gabugabu.bschool.key',
+  logLevel: 'info'
 };
 
 uwgws.initialize(config);

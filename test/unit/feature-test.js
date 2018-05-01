@@ -68,13 +68,9 @@ describe('Initializing the module', () => {
       }
     };
 
-    let result = null;
-    let service = function () {
-      result = uwgws.initialize(valid);
-    };
-
-    expect(service).to.not.throw(Error);
-    expect(result.cert).to.not.be.null;
-    expect(result.key).to.not.be.null;
+    return expect(uwgws.initialize(valid)).to.not.be.rejected.then((result) => {
+      expect(result.group.config.auth.cert).to.not.be.undefined;
+      expect(result.group.config.auth.key).to.not.be.undefined;
+    });
   });
 });

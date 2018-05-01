@@ -154,7 +154,7 @@ describe('Membership', () => {
       expect(result.message.length).to.equal(0);
     });
 
-    it('does NOT throw an error when attemping to delete an invalid netid from the group', async () => {
+    it('does NOT throw an error when attempting to delete an invalid netid from the group', async () => {
       let options = {
         id:    group,
         netid: 'schadfakenetidn'
@@ -166,7 +166,7 @@ describe('Membership', () => {
       expect(result.message.length).to.equal(0);
     });
 
-    it('throws an error when attemping to delete from an invalid group', async () => {
+    it('throws an error when attempting to delete from an invalid group', async () => {
       let options = {
         id:    nonGroup,
         netid: 'dgale'
@@ -178,7 +178,7 @@ describe('Membership', () => {
       expect(result.message.length).to.equal(1);
     });
 
-    it('throws an error when attemping to delete from a group we are not authorized to administer', async () => {
+    it('throws an error when attempting to delete from a group we are not authorized to administer', async () => {
       let options = {
         id:    unauthorizedGroup,
         netid: 'dgale'

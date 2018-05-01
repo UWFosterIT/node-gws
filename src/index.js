@@ -1,5 +1,5 @@
 import 'source-map-support/register';
-import AWS from 'aws-sdk';
+import AWS        from 'aws-sdk';
 import fs         from 'fs';
 import Group      from './modules/group';
 import log4js     from 'log4js';

@@ -85,9 +85,8 @@ describe('Group', function () {
 
   it('should return success when trying to delete an invalid group', async () => {
     let result = await uwgws.group.del({id: nonGroup});
-    // Delete returns 200 regardless wether it exists or not.
-    expect(result.statusCode).to.eql(200);
-    expect(result.message.length).to.eql(0);
+    expect(result.statusCode).to.eql(404);
+    expect(result.message.length).to.eql(1);
   });
 
   it('should return an error when trying to delete you are not authorized to administer', async () => {

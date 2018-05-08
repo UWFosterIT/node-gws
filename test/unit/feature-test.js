@@ -1,6 +1,6 @@
 require('../setup');
 
-describe('Initializing the module', () => {
+describe('Initializing the module with bad config info', () => {
   it('should error when given missing cert or key', () => {
     let path     = __dirname.replace('/unit', '/utils');
     let certFile = `${path}/dummy.crt`;
@@ -56,9 +56,9 @@ describe('Initializing the module', () => {
   });
 });
 
-describe('Initializing the module', () => {
-  it('should not error', () => {
-    let path = __dirname.replace('/unit', '/utils');
+describe('Initializing the module with dummy certs', () => {
+  it('should not error', async () => {
+    let path = __dirname.replace('/unit', '/utils/');
     let valid = {
       certInfo: {
         file: {

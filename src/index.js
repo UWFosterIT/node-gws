@@ -1,12 +1,11 @@
-import 'source-map-support/register';
-import AWS        from 'aws-sdk';
-import fs         from 'fs';
-import Group      from './modules/group';
-import log4js     from 'log4js';
-import Membership from './modules/membership';
-import MicroCache from 'micro-cache';
-import Search     from './modules/search';
-import util       from 'util';
+let AWS        = require('aws-sdk');
+let fs         = require('fs');
+let Group      = require('./modules/group');
+let log4js     = require('log4js');
+let Membership = require('./modules/membership');
+let MicroCache = require('micro-cache');
+let Search     = require('./modules/search');
+let util       = require('util');
 
 let FileCertificate = {
   readCertificate: async (opts) => {

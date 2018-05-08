@@ -1,10 +1,9 @@
-import 'source-map-support';
-import chai from 'chai';
-import chaiAsPromised from 'chai-as-promised';
-import config from './config';
-import sinon from 'sinon';
-import sinonChai from 'sinon-chai';
-import uwgws from '../../lib/node/index';
+let chai = require('chai');
+let chaiAsPromised = require('chai-as-promised');
+let config = require('./config');
+let sinon = require('sinon');
+let sinonChai = require('sinon-chai');
+let uwgws = require('../../src/index');
 
 chai.use(sinonChai);
 chai.use(chaiAsPromised);
@@ -13,13 +12,13 @@ global.config = config;
 global.uwgws = uwgws;
 
 beforeEach(function () {
-  this.sandbox = sinon.sandbox.create();
+  this.sandbox = sinon.createSandbox();
   this.stub = this.sandbox.stub.bind(this.sandbox);
   this.spy = this.sandbox.spy.bind(this.sandbox);
 });
 
 afterEach(function () {
-  this.stub = null;
-  this.spy = null;
+  this.stub = void 0;
+  this.spy = void 0;
   this.sandbox.restore();
 });

@@ -1,4 +1,4 @@
-import '../setup';
+require('../setup');
 
 describe('Group', function () {
 
@@ -19,7 +19,7 @@ describe('Group', function () {
     await uwgws.initialize(config);
   });
 
-  before(async () =>  {
+  before(async () => {
     await uwgws.initialize(config);
     await uwgws.group.del({id: options.name});
   });
@@ -48,10 +48,10 @@ describe('Group', function () {
     expect(result.error).to.eql(false);
     expect(result.message.length).to.eql(0);
 
-    result = await uwgws.group.del({id: options.name});
-    expect(result.statusCode).to.eql(200);
-    expect(result.error).to.eql(false);
-    expect(result.message.length).to.eql(0);
+    let resultDel = await uwgws.group.del({id: options.name});
+    expect(resultDel.statusCode).to.eql(200);
+    expect(resultDel.error).to.eql(false);
+    expect(resultDel.message.length).to.eql(0);
   });
 
   it('should move a group to a new stem', async () => {

@@ -19,7 +19,7 @@ describe('Search', () => {
   });
 
   describe('searching by stem', () => {
-    let scopedCount;
+    // let scopedCount;
 
     it('should search by stem', async () => {
       let query = {stem: 'uw_foster_staff'};
@@ -30,7 +30,7 @@ describe('Search', () => {
       expect(result.message.length).to.eql(0);
       expect(Array.isArray(result.data)).to.eql(true);
       expect(result.data.length).to.be.greaterThan(10);
-      scopedCount = result.data.length;
+      // scopedCount = result.data.length;
     });
 
     // Disabling this for now. Functionality of GWS API seems broken.

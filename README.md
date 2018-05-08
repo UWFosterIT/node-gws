@@ -3,6 +3,8 @@ This implements some of the [v2 UW Groups Webservice endpoints](https://wiki.cac
 
 This module assumes you have gone through all the required steps to gain and verify access as [documented in their wiki](https://wiki.cac.washington.edu/display/infra/Groups+Web+Service+REST+API).
 
+Note: Version 4.0.0 and later require Node 8
+
 ## Installation
     npm install uwgws
 
@@ -12,7 +14,7 @@ First setup a config object to hold variables for your x509 cert and key as well
 The certInfo object should only contain either a file or an s3 object. If you include both, only the file object will be picked up.
 
 ```JavaScript
-let uwgws = require('../../lib/index');
+let uwgws = require('uwgws');
 
 let config = {
   baseUrl:   'https://iam-ws.u.washington.edu:7443/group_sws/v2/',
@@ -36,7 +38,7 @@ let config = {
   logLevel: 'info'
 };
 
-uwgws.initialize(config);
+await uwgws.initialize(config);
 ```
 
 Now query for memberships for the desired group name or regid. Set `effective: true` if you want effective membership, otherwise false or not at all.

@@ -1,4 +1,5 @@
 # UW Groups Web Service
+
 This implements some of the [v2 UW Groups Webservice endpoints](https://wiki.cac.washington.edu/display/infra/Groups+Web+Service+REST+API). Each endpoint is queried using convienent options to build the final request to GWS.
 
 This module assumes you have gone through all the required steps to gain and verify access as [documented in their wiki](https://wiki.cac.washington.edu/display/infra/Groups+Web+Service+REST+API).
@@ -6,9 +7,11 @@ This module assumes you have gone through all the required steps to gain and ver
 Note: Version 4.0.0 and later require Node 8
 
 ## Installation
+
     npm install uwgws
 
 ## USE
+
 First setup a config object to hold variables for your x509 cert and key as well as some optional caching of responses from the service. Cache options are detailed in the [micro-cache](https://www.npmjs.com/package/micro-cache) node module.
 
 The certInfo object should only contain either a file or an s3 object. If you include both, only the file object will be picked up.
@@ -54,6 +57,7 @@ console.log(result);
 ```
 
 ### Using a local cache
+
 The `cacheMode` can be set to any one of the following modes. This uses the `micro-cache` node module as a local file system cache.
 
 - `wild`: all requests go out to the internet over HTTP, nothing is loaded from cache, and nothing is saved to the cache.
@@ -61,12 +65,15 @@ The `cacheMode` can be set to any one of the following modes. This uses the `mic
 - `record`: Loads files from the cache and saves new files to the cache.
 
 ### Logging
+
 This module uses `log4js` for all logging. Set an environment variable to a valid log level such as `LOG_LEVEL=debug node script.js`. Alternatively, the log level can be set using the `logLevel` property of the `node-gws` config.
 
 ## Endpoint Implementation
+
 All links below go to the official service documentation. The code block refers to the implemented method in this module.
 
-#### Fully Supported
+### Fully Supported
+
 All of the `uwgws` methods return a promise for a result object that contains the following elements:
 
 Return Object Element | Meaning

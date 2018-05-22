@@ -8,12 +8,10 @@ describe('Search', () => {
   });
 
   it('should search by group name', async () => {
-    let query  = {name: 'student'};
+    let query  = {name: '*student*'};
     let result = await uwgws.search.query(query);
 
     expect(result.statusCode).to.eql(200);
-    expect(result.error).to.eql(false);
-    expect(result.message.length).to.eql(0);
     expect(Array.isArray(result.data)).to.eql(true);
     expect(result.data.length).to.be.greaterThan(10);
   });
@@ -26,8 +24,6 @@ describe('Search', () => {
       let result = await uwgws.search.query(query);
 
       expect(result.statusCode).to.eql(200);
-      expect(result.error).to.eql(false);
-      expect(result.message.length).to.eql(0);
       expect(Array.isArray(result.data)).to.eql(true);
       expect(result.data.length).to.be.greaterThan(10);
       // scopedCount = result.data.length;
@@ -59,8 +55,6 @@ describe('Search', () => {
       let result = await uwgws.search.query(query);
 
       expect(result.statusCode).to.eql(200);
-      expect(result.error).to.eql(false);
-      expect(result.message.length).to.eql(0);
       expect(Array.isArray(result.data)).to.eql(true);
       expect(result.data.length).to.be.greaterThan(6);
       directCount = result.data.length;
@@ -74,8 +68,6 @@ describe('Search', () => {
       let result = await uwgws.search.query(query);
 
       expect(result.statusCode).to.eql(200);
-      expect(result.error).to.eql(false);
-      expect(result.message.length).to.eql(0);
       expect(Array.isArray(result.data)).to.eql(true);
       expect(result.data.length).to.be.greaterThan(9);
       expect(result.data.length).to.be.greaterThan(directCount);
@@ -90,8 +82,6 @@ describe('Search', () => {
       let result = await uwgws.search.query(query);
 
       expect(result.statusCode).to.eql(200);
-      expect(result.error).to.eql(false);
-      expect(result.message.length).to.eql(0);
       expect(Array.isArray(result.data)).to.eql(true);
       expect(result.data.length).to.be.greaterThan(5);
       directCount = result.data.length;
@@ -105,8 +95,6 @@ describe('Search', () => {
       let result = await uwgws.search.query(query);
 
       expect(result.statusCode).to.eql(200);
-      expect(result.error).to.eql(false);
-      expect(result.message.length).to.eql(0);
       expect(Array.isArray(result.data)).to.eql(true);
       expect(result.data.length).to.be.greaterThan(10);
       expect(result.data.length).to.be.greaterThan(directCount);

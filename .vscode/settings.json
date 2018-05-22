@@ -4,7 +4,10 @@
     "authnfactor",
     "createtime",
     "dependson",
+    "etag",
     "factor",
+    "netid",
+    "newstem",
     "regid",
     "uwgws"
   ]

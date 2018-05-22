@@ -1,4 +1,3 @@
-let cheerio = require('cheerio');
 let Service = require('./service');
 
 class Membership extends Service {
@@ -12,24 +11,7 @@ class Membership extends Service {
       membership = 'effective_member';
     }
 
-    return this._get(`group/${opt.id}/${membership}`)
-      .then(result => {
-        let $ = cheerio.load(result.xhtml);
-        let members = [];
-
-        $('li', '.members').each(function () {
-          var anchor = $(this).children().first();
-          let item = {
-            netid: anchor.text(),
-            type:  anchor.attr('type')
-          };
-
-          members.push(item);
-        });
-
-        result.data = members;
-        return result;
-      });
+    return this._get(`group/${opt.id}/${membership}`);
   }
 
   add(opt) {

@@ -1,5 +1,4 @@
 /* eslint-disable sort-keys */
-let cheerio = require('cheerio');
 let qs      = require('query-string');
 let Service = require('./service');
 
@@ -20,24 +19,7 @@ class Search extends Service {
 
     let query = qs.stringify(params);
 
-    return this._get(`search/?${query}`)
-      .then(result => {
-        let $ = cheerio.load(result.xhtml);
-
-        let data = [];
-
-        $('.groupreference').each(function () {
-          let group = {
-            name:  $('.name', this).text(),
-            regid: $('.regid', this).text(),
-            title: $('.title', this).text()
-          };
-          data.push(group);
-        });
-
-        result.data = data;
-        return result;
-      });
+    return this._get(`search/?${query}`);
   }
 }
 

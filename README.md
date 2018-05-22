@@ -5,6 +5,7 @@ This implements some of the [v2 UW Groups Webservice endpoints](https://wiki.cac
 This module assumes you have gone through all the required steps to gain and verify access as [documented in their wiki](https://wiki.cac.washington.edu/display/infra/Groups+Web+Service+REST+API).
 
 Note: Version 4.0.0 and later require Node 8
+Note: Version 5.0.0 and later use the GWS v3 JSON API. Responses from this library may be different because of changes in the GWS API output.
 
 ## Installation
 

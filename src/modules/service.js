@@ -1,7 +1,4 @@
 let _       = require('underscore');
-let cheerio = require('cheerio');
-let fs      = require('fs');
-let path    = require('path');
 let request = require('request');
 
 class Service {
@@ -9,7 +6,7 @@ class Service {
     this.config    = config;
     this.log       = config.log;
     this.cache     = config.cache;
-    this.templates = this._templates();
+    // this.templates = this._templates();
   }
 
   _options(endpoint) {
@@ -20,18 +17,14 @@ class Service {
     };
   }
 
-  _templates() {
-    let cgPath = path.resolve(__dirname, '../../templates/group-create.html');
-    return {createGroup: fs.readFileSync(cgPath, 'utf-8')};
-  }
-
-  _put(endpoint, xhtml, etag) {
+  _put(endpoint, groupData, etag) {
     return new Promise((fulfill, reject) => {
       let options = this._options(endpoint);
-      if (xhtml) {
+      if (groupData) {
         _.extend(options.headers, etag);
-        options.body = xhtml;
+        options.body = groupData;
       }
+      options.json = true;
 
       request.put(options, (err, response, body) => {
         if (err) {
@@ -45,6 +38,7 @@ class Service {
   _del(endpoint) {
     return new Promise((fulfill, reject) => {
       let options = this._options(endpoint);
+      options.json = true;
 
       request.del(options, (err, response, body) => {
         if (err) {
@@ -61,6 +55,7 @@ class Service {
       // dryrun  load not save
       // record  load and save
       let options = this._options(endpoint);
+      options.json = true;
       if (this.config.cacheMode === 'wild') {
         this.log.debug(`wild -- ${options.uri}`);
 
@@ -110,49 +105,19 @@ class Service {
   }
 
   _buildResult(response, body) {
-    let err = false;
-    let msg = [];
-    const $ = cheerio.load(body);
-
-    // Not found, unauthorized
-    if (response.statusCode == 404 || response.statusCode == 401) {
-      err = true;
-      // Add and Get return errors in different formats because why not?
-      let message = $('.alert').text();
-      if (message == '') {
-        message = $('.error_message').text();
+    let result = {};
+    result.statusCode = response.statusCode;
+    if (result.statusCode !== 200 && result.statusCode !== 201) {
+      // console.log(body.errors);
+      result.message = body.errors[0].detail;
+      result.data = {};
+    } else {
+      if (typeof body.errors !== 'undefined') {
+        result.message = body.errors[0].detail;
       }
-
-      // History (and probably others) don't include error messages because of course.
-      if (message == '') {
-        message = 'Unknown error. Most likely the group does not exist.';
-      }
-
-      msg.push(message.trim());
+      result.data = body.data;
     }
-
-    // Invalid netids sent into the Add method are returned in a list in the html
-    let missing = $('.notfoundmembers').find($('.notfoundmember')).length;
-    if (missing > 0) {
-      err = true;
-      $('.notfoundmember').each(function () {
-        msg.push(`${$(this).text()} is not a valid netid`);
-      });
-    }
-
-    // Catch any error not spefically handled above. These can be handled more
-    // specifically and given a better error message if needed.
-    // I'm doing this to make the error field consistently return true
-    if (!err && (response.statusCode < 200 || response.statusCode >= 300)) {
-      err = true;
-      msg.push('An error occured while processing your request.');
-    }
-    return {
-      error:      err,
-      message:    msg,
-      statusCode: response.statusCode,
-      xhtml:      body
-    };
+    return result;
   }
 }
 

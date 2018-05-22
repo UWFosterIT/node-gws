@@ -1,6 +1,6 @@
 {
   "name": "uwgws",
-  "version": "4.0.1",
+  "version": "5.0.0",
   "description": "Client Library for University of Washington's Groups Web Service",
   "bugs:": {
     "url": "https://github.com/UWFosterIT/node-gws/issues"
@@ -20,13 +20,13 @@
   ],
   "dependencies": {
     "@types/aws-sdk": "^2.7.0",
-    "@types/node": "^10.0.9",
-    "aws-sdk": "^2.239.1",
+    "@types/node": "^10.1.2",
+    "aws-sdk": "^2.244.1",
     "cheerio": "^1.0.0-rc.2",
-    "log4js": "^2.6.0",
+    "log4js": "^2.7.0",
     "micro-cache": "^2.3.0",
     "query-string": "^6.1.0",
-    "request": "^2.85.0",
+    "request": "^2.87.0",
     "underscore": "^1.9.0"
   },
   "devDependencies": {
@@ -38,7 +38,7 @@
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
     "eslint": "^4.19.1",
-    "mocha": "^5.1.1",
+    "mocha": "^5.2.0",
     "sinon": "^5.0.7",
     "sinon-chai": "^3.0.0"
   },

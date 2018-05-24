@@ -12,10 +12,10 @@ describe('Membership', () => {
   });
 
   // remove group created by tests
-  // after(async () => {
-  //   uwgws.initialize(config);
-  //   await uwgws.group.del({id: group});
-  // });
+  after(async () => {
+    uwgws.initialize(config);
+    await uwgws.group.del({id: group});
+  });
 
   describe('Add', () => {
     it('should add a new member to the group', async () => {
@@ -26,6 +26,7 @@ describe('Membership', () => {
 
       let result = await uwgws.membership.add(options);
       expect(result.statusCode).to.equal(200);
+      expect(result.error).to.eql(false);
       expect(result.message[0]).to.eql('OK');
     });
 
@@ -37,6 +38,7 @@ describe('Membership', () => {
 
       let result = await uwgws.membership.add(options);
       expect(result.statusCode).to.eql(200);
+      expect(result.error).to.eql(false);
       expect(result.message[0]).to.eql('OK');
     });
 
@@ -48,11 +50,12 @@ describe('Membership', () => {
 
       let result = await uwgws.membership.add(options);
       expect(result.statusCode).to.eql(200);
+      expect(result.error).to.eql(false);
       expect(result.message[0]).to.eql('OK');
     });
 
     // Catching add errors
-    it('should return an error if the netid is invalid', async () => {
+    it('should return notFound if the netid is invalid', async () => {
       let options = {
         id:    group,
         netid: 'dgalefakenetid'
@@ -60,7 +63,8 @@ describe('Membership', () => {
 
       let result = await uwgws.membership.add(options);
       expect(result.statusCode).to.equal(200);
-      expect(result.message[0]).to.eql('OK');
+      expect(result.error).to.eql(true);
+      expect(result.notFound.length).to.eql(1);
     });
 
     it('should return an error if the group is invalid', async () => {
@@ -71,6 +75,7 @@ describe('Membership', () => {
 
       let result = await uwgws.membership.add(options);
       expect(result.statusCode).to.equal(404);
+      expect(result.error).to.eql(true);
       expect(result.message.length).to.equal(1);
     });
 
@@ -82,7 +87,8 @@ describe('Membership', () => {
 
       let result = await uwgws.membership.add(options);
       expect(result.statusCode).to.eql(200);
-      expect(result.message[0]).to.eql('OK');
+      expect(result.error).to.eql(true);
+      expect(result.notFound.length).to.eql(2);
     });
 
     it('does NOT throw an error when adding an existing member', async () => {
@@ -93,6 +99,7 @@ describe('Membership', () => {
 
       let result = await uwgws.membership.add(options);
       expect(result.statusCode).to.equal(200);
+      expect(result.error).to.eql(false);
       expect(result.message[0]).to.eql('OK');
     });
 
@@ -104,6 +111,7 @@ describe('Membership', () => {
 
       let result = await uwgws.membership.add(options);
       expect(result.statusCode).to.eql(200);
+      expect(result.error).to.eql(true);
       expect(result.message.length).to.equal(1);
     });
 
@@ -115,6 +123,7 @@ describe('Membership', () => {
 
       let result = await uwgws.membership.add(options);
       expect(result.statusCode).to.equal(401);
+      expect(result.error).to.eql(true);
       expect(result.message.length).to.equal(1);
     });
 
@@ -129,6 +138,7 @@ describe('Membership', () => {
 
       let result = await uwgws.membership.del(options);
       expect(result.statusCode).to.equal(200);
+      expect(result.error).to.eql(false);
       expect(result.message[0]).to.eql('deleted');
     });
 
@@ -140,6 +150,7 @@ describe('Membership', () => {
 
       let result = await uwgws.membership.del(options);
       expect(result.statusCode).to.equal(200);
+      expect(result.error).to.eql(false);
       expect(result.message[0]).to.eql('deleted');
     });
 
@@ -151,10 +162,11 @@ describe('Membership', () => {
 
       let result = await uwgws.membership.del(options);
       expect(result.statusCode).to.equal(200);
+      expect(result.error).to.eql(false);
       expect(result.message[0]).to.eql('deleted');
     });
 
-    it('throws an error when attempting to delete from an invalid group', async () => {
+    it('returns an error when attempting to delete from an invalid group', async () => {
       let options = {
         id:    nonGroup,
         netid: 'dgale'
@@ -162,10 +174,11 @@ describe('Membership', () => {
 
       let result = await uwgws.membership.del(options);
       expect(result.statusCode).to.equal(404);
+      expect(result.error).to.eql(true);
       expect(result.message.length).to.equal(1);
     });
 
-    it('throws an error when attempting to delete from a group we are not authorized to administer', async () => {
+    it('returns an error when attempting to delete from a group we are not authorized to administer', async () => {
       let options = {
         id:    unauthorizedGroup,
         netid: 'dgale'
@@ -173,6 +186,7 @@ describe('Membership', () => {
 
       let result = await uwgws.membership.del(options);
       expect(result.statusCode).to.equal(401);
+      expect(result.error).to.eql(true);
       expect(result.message.length).to.equal(1);
     });
 
@@ -181,6 +195,7 @@ describe('Membership', () => {
 
       let result = await uwgws.membership.del(options);
       expect(result.statusCode).to.equal(400);
+      expect(result.error).to.eql(true);
       expect(result.message.length).to.equal(1);
     });
 
@@ -195,6 +210,7 @@ describe('Membership', () => {
       // this test occasionally returns 404
       let result = await uwgws.membership.get(options);
       expect(result.statusCode).to.eql(200);
+      expect(result.error).to.eql(false);
       expect(result.data.length).to.be.within(1, 5);
       expect(result.message).to.be.undefined;
     });
@@ -207,6 +223,7 @@ describe('Membership', () => {
 
       let result = await uwgws.membership.get(options);
       expect(result.data.length).to.be.within(10, 20);
+      expect(result.error).to.eql(false);
       expect(result.message).to.be.undefined;
     });
 
@@ -215,6 +232,7 @@ describe('Membership', () => {
       let result = await uwgws.group.history(query);
 
       expect(result.statusCode).to.eql(200);
+      expect(result.error).to.eql(false);
       expect(result.message).to.be.undefined;
       expect(Array.isArray(result.data)).to.eql(true);
       expect(result.data.length).to.eql(11);
@@ -226,6 +244,7 @@ describe('Membership', () => {
 
       let result = await uwgws.membership.get(options);
       expect(result.statusCode).to.eql(404);
+      expect(result.error).to.eql(true);
       expect(result.message.length).to.equal(1);
     });
 
@@ -234,6 +253,7 @@ describe('Membership', () => {
       let query  = {id: nonGroup};
       let result = await uwgws.group.history(query);
       expect(result.statusCode).to.eql(404);
+      expect(result.error).to.eql(true);
       expect(result.message.length).to.equal(1);
     });
   });

@@ -80,10 +80,10 @@ All of the `uwgws` methods return a promise for a result object that contains th
 Return Object Element | Meaning
 ---------- | ---------------
 `statusCode` | This element represents the HTTP statusCode of the API response.
-`xhtml` | This is the raw response from the server
-`data` | This element represents parsed XHTML into JSON when possible for GET requests.
-`error` | Boolean value represents the presence or absence of a business logic error. For example, adding an invalid netid to a valid group returns a `statusCode` of 200 but `error` = false
-`message` | Array of error messages if `error` is true. There will generally be only one value unless you attempted to add multiple invalid netids to a group. Then each invalid id will generate an item in the `message` array.
+`data` | This is the data element returned by the GWS API. If no data element is returned by the API, this will be an empty object.
+`error` | Boolean value represents the presence or absence of a business logic error. For example, adding an invalid netid to a valid group returns a `statusCode` of 200 but `error` = true.
+`message` | Array of error details returned by the API. Some operations return an "error" message when successful.
+`notFound` | Array of invalid UW Net IDs when adding members to a valid group. An add operation will return a status code of 200, a message of OK and the error element will be set to true when the `notFound` element is present.
 
 All of the `options` parameters are outlined in `src/modules/[endpoint]`.
 
@@ -102,11 +102,9 @@ Endpoint  | Implementation
     git clone git@github.com:UWFosterIT/node-gws.git
     cd node-gws
     # create a branch as needed. don't work on master
-    yarn install
+    npm install
     cp test/setup/config-sample.js test/setup/config.js
     # put appropriate values in the new config.js
     npm test
 
-It is recommended that you use the eval environment (https://eval.groups.uw.edu/group_sws/v2/) when developing/testing to avoid making lasting changes. And the search test will occassionaly timeout if you are using prod.
-
-Run `npm run lint` and fix any errors or warnings before checking in your code.
+It is recommended that you use the eval environment (https://eval.groups.uw.edu/group_sws/v3/) when developing/testing to avoid making lasting changes. And the search test will occasionally timeout if you are using prod.

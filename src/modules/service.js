@@ -106,16 +106,24 @@ class Service {
 
   _buildResult(response, body) {
     let result = {};
+    result.data = {};
+    result.error = false;
     result.statusCode = response.statusCode;
     if (result.statusCode !== 200 && result.statusCode !== 201) {
-      // console.log(body.errors);
+      result.error = true;
       result.message = body.errors[0].detail;
-      result.data = {};
     } else {
       if (typeof body.errors !== 'undefined') {
         result.message = body.errors[0].detail;
+        if (typeof body.errors[0].notFound !== 'undefined' && body.errors[0].notFound.length > 0) {
+          result.error = true;
+          result.notFound = body.errors[0].notFound;
+        }
       }
-      result.data = body.data;
+
+      if (typeof body.data !== 'undefined') {
+        result.data = body.data;
+      }
     }
     return result;
   }

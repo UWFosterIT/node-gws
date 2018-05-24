@@ -12,12 +12,13 @@ describe('Search', () => {
     let result = await uwgws.search.query(query);
 
     expect(result.statusCode).to.eql(200);
+    expect(result.error).to.eql(false);
     expect(Array.isArray(result.data)).to.eql(true);
     expect(result.data.length).to.be.greaterThan(10);
   });
 
   describe('searching by stem', () => {
-    // let scopedCount;
+    let scopedCount;
 
     it('should search by stem', async () => {
       let query = {stem: 'uw_foster_staff'};
@@ -26,25 +27,24 @@ describe('Search', () => {
       expect(result.statusCode).to.eql(200);
       expect(Array.isArray(result.data)).to.eql(true);
       expect(result.data.length).to.be.greaterThan(10);
-      // scopedCount = result.data.length;
+      scopedCount = result.data.length;
     });
 
     // Disabling this for now. Functionality of GWS API seems broken.
 
-    // it('should return more results with wider scope', async () => {
-    //   let query = {
-    //     scope: 'all',
-    //     stem:  'uw_foster_staff'
-    //   };
-    //   let result = await uwgws.search.query(query);
+    it('should return more results with wider scope', async () => {
+      let query = {
+        scope: 'all',
+        stem:  'uw_foster_staff'
+      };
+      let result = await uwgws.search.query(query);
 
-    //   expect(result.statusCode).to.eql(200);
-    //   expect(result.error).to.eql(false);
-    //   expect(result.message.length).to.eql(0);
-    //   expect(Array.isArray(result.data)).to.eql(true);
-    //   expect(result.data.length).to.be.greaterThan(10);
-    //   expect(result.data.length).to.be.greaterThan(scopedCount);
-    // });
+      expect(result.statusCode).to.eql(200);
+      expect(result.error).to.eql(false);
+      expect(Array.isArray(result.data)).to.eql(true);
+      expect(result.data.length).to.be.greaterThan(10);
+      expect(result.data.length).to.be.greaterThan(scopedCount);
+    });
   });
 
   describe('searching by member', () => {

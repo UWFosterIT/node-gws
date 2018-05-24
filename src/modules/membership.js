@@ -19,10 +19,7 @@ class Membership extends Service {
       opt.netid = opt.netid.join(',');
     }
 
-    return this._put(`group/${opt.id}/member/${opt.netid}`)
-      .then(result => {
-        return result;
-      });
+    return this._put(`group/${opt.id}/member/${opt.netid}`);
   }
 
   del(opt) {
@@ -38,10 +35,8 @@ class Membership extends Service {
                     <body>${msg}</body></html>`
       };
     }
-    return this._del(`group/${opt.id}/member/${opt.netid}`)
-      .then(result => {
-        return result;
-      });
+
+    return this._del(`group/${opt.id}/member/${opt.netid}`);
   }
 }
 

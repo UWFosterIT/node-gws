@@ -1,5 +1,5 @@
 let config = {
-  baseUrl:   'https://URL/to/Web/Service/',
+  baseUrl:   'https://iam-ws.u.washington.edu/group_sws/v3/',
   cacheExt:  '.json',
   cacheMode: 'wild',
   cachePath: '.cache/',

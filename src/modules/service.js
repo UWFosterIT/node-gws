@@ -1,5 +1,6 @@
 let _       = require('underscore');
 let request = require('request');
+let util    = require('util');
 
 class Service {
   constructor(config) {
@@ -30,6 +31,7 @@ class Service {
         if (err) {
           reject(err);
         }
+        this.log.debug(`PUT -- ${options.uri}`);
         fulfill(this._buildResult(response, body));
       });
     });
@@ -44,6 +46,7 @@ class Service {
         if (err) {
           reject(err);
         }
+        this.log.debug(`DELETE -- ${options.uri}`);
         fulfill(this._buildResult(response, body));
       });
     });
@@ -57,7 +60,7 @@ class Service {
       let options = this._options(endpoint);
       options.json = true;
       if (this.config.cacheMode === 'wild') {
-        this.log.debug(`wild -- ${options.uri}`);
+        this.log.debug(`wild -- GET -- ${options.uri}`);
 
         request.get(options, (err, response, body) => {
           if (err) {
@@ -105,6 +108,7 @@ class Service {
   }
 
   _buildResult(response, body) {
+    this.log.debug(util.inspect(body, {depth: null}));
     let result = {};
     result.data = {};
     result.error = false;

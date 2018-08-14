@@ -202,7 +202,6 @@ describe('Membership', () => {
   });
 
   describe('Get', () => {
-    before(done => setTimeout(() => done(), 7000));
 
     it('should return membership', async () => {
       let options = {id: group};

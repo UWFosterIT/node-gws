@@ -2,3 +2,4 @@ test/setup/config.js
 node_modules
 *.log
 *.txt
+cache

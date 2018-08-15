@@ -90,17 +90,18 @@ class Service {
         if (body) {
           let response = {};
           response.statusCode = 200;
-          fulfill(this._buildResult(response, body));
+          fulfill(this._buildResult(response, JSON.parse(body)));
         } else {
 
           request.get(options, (err, response, body) => {
-            if (err) {
+            if (!err) {
+              if (response.statusCode === 200) {
+                this.cache.write(options.uriCache, JSON.stringify(body), true);
+              }
+              fulfill(this._buildResult(response, body));
+            } else {
               reject(err);
             }
-            if (response.statusCode === 200) {
-              this.cache.write(options.uriCache, body, true);
-            }
-            fulfill(this._buildResult(response, body));
           });
         }
       }

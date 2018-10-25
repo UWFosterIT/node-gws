@@ -109,7 +109,7 @@ class Service {
   }
 
   _buildResult(response, body) {
-    this.log.debug(util.inspect(body, {depth: null}));
+    this.log.debug(`Response body: ${util.inspect(body, {depth: null})}`);
     let result = {};
     result.data = {};
     result.error = false;

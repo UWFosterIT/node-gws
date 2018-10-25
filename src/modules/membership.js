@@ -18,21 +18,20 @@ class Membership extends Service {
     if (Array.isArray(opt.netid)) {
       opt.netid = opt.netid.join(',');
     }
+    let synchronized = '';
+    if (opt.sync !== undefined && opt.sync === true) {
+      synchronized = '?synchronized=true';
+    }
 
-    return this._put(`group/${opt.id}/member/${opt.netid}`);
+    return this._put(`group/${opt.id}/member/${opt.netid}${synchronized}`);
   }
 
   del(opt) {
     if (!opt.netid) {
-      let msg = 'Member delete must include a list of id(s)';
       return {
         error:      true,
-        message:    [msg],
-        statusCode: 400,
-        xhtml:      `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-                    <html xmlns="http://www.w3.org/1999/xhtml">
-                    <head><title>Bad Request</title></head>
-                    <body>${msg}</body></html>`
+        message:    ['Member delete must include a list of id(s)'],
+        statusCode: 400
       };
     }
 

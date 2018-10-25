@@ -3,8 +3,8 @@ require('../setup');
 
 describe('Search', () => {
 
-  beforeEach(() => {
-    uwgws.initialize(config);
+  beforeEach(async () => {
+    await uwgws.initialize(config);
   });
 
   it('should search by group name', async () => {

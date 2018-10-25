@@ -30,7 +30,12 @@ class Group extends Service {
     let groupData = {};
     groupData.data = opts;
 
-    return this._put(`group/${opts.id}`, groupData, etag);
+    let synchronized = '';
+    if (opts.sync !== undefined && opts.sync === true) {
+      synchronized = '?synchronized=true';
+    }
+
+    return this._put(`group/${opts.id}${synchronized}`, groupData, etag);
   }
 
   del(opt) {

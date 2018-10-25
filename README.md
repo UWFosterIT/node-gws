@@ -97,6 +97,12 @@ Endpoint  | Implementation
 [Group - History](https://wiki.cac.washington.edu/display/infra/Groups+WebService+Get+History) | `uwgws.group.history(options)`
 [Search - Query](https://wiki.cac.washington.edu/display/infra/Groups+WebService+Search) | `uwgws.search.query(options)`
 
+### LDAP cache
+
+The group service behind the GWS API uses LDAP caches to improve reliability and response time for some requests. The caches may take several seconds to update after changes to GWS are made. This can cause inconsistency in that you may not 'read what you wrote' during the time the cache is invalid.
+
+If you need to ensure cache consistency, you can add `sync: true` to the options of group create and membership add operations.
+
 ## Development
 
     git clone git@github.com:UWFosterIT/node-gws.git

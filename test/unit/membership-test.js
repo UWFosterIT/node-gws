@@ -13,7 +13,7 @@ describe('Membership', () => {
 
   // remove group created by tests
   after(async () => {
-    uwgws.initialize(config);
+    await uwgws.initialize(config);
     await uwgws.group.del({id: group});
   });
 
@@ -21,7 +21,8 @@ describe('Membership', () => {
     it('should add a new member to the group', async () => {
       let options = {
         id:    group,
-        netid: 'gabugabu'
+        netid: 'gabugabu',
+        sync:  true
       };
 
       let result = await uwgws.membership.add(options);
@@ -33,7 +34,8 @@ describe('Membership', () => {
     it('should add multiple members to a group', async () => {
       let options = {
         id:    group,
-        netid: ['dgale', 'gabugabu']
+        netid: ['dgale', 'gabugabu'],
+        sync:  true
       };
 
       let result = await uwgws.membership.add(options);
@@ -45,7 +47,8 @@ describe('Membership', () => {
     it('should add a rollup group', async () => {
       let options = {
         id:    group,
-        netid: 'uw_foster_staff_it_developers'
+        netid: 'uw_foster_staff_it_developers',
+        sync:  true
       };
 
       let result = await uwgws.membership.add(options);

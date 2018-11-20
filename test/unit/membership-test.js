@@ -28,7 +28,7 @@ describe('Membership', () => {
       let result = await uwgws.membership.add(options);
       expect(result.statusCode).to.equal(200);
       expect(result.error).to.eql(false);
-      expect(result.message[0]).to.eql('OK');
+      expect(result.message[0]).to.eql('See the notFound list for failed member puts');
     });
 
     it('should add multiple members to a group', async () => {
@@ -41,7 +41,7 @@ describe('Membership', () => {
       let result = await uwgws.membership.add(options);
       expect(result.statusCode).to.eql(200);
       expect(result.error).to.eql(false);
-      expect(result.message[0]).to.eql('OK');
+      expect(result.message[0]).to.eql('See the notFound list for failed member puts');
     });
 
     it('should add a rollup group', async () => {
@@ -54,7 +54,7 @@ describe('Membership', () => {
       let result = await uwgws.membership.add(options);
       expect(result.statusCode).to.eql(200);
       expect(result.error).to.eql(false);
-      expect(result.message[0]).to.eql('OK');
+      expect(result.message[0]).to.eql('See the notFound list for failed member puts');
     });
 
     // Catching add errors
@@ -103,7 +103,7 @@ describe('Membership', () => {
       let result = await uwgws.membership.add(options);
       expect(result.statusCode).to.equal(200);
       expect(result.error).to.eql(false);
-      expect(result.message[0]).to.eql('OK');
+      expect(result.message[0]).to.eql('See the notFound list for failed member puts');
     });
 
     it('should return an error when adding an invalid rollup group', async () => {

@@ -74,7 +74,7 @@ describe('Group', function () {
     let result = await uwgws.group.move(query);
     expect(result.statusCode).to.eql(200);
     expect(result.error).to.eql(false);
-    expect(result.message[0]).to.eql('OK');
+    expect(result.message[0]).to.eql('Group moved');
 
     let getRes = await uwgws.group.get({id: 'uw_foster_staff_move'});
     expect(result.error).to.eql(false);

@@ -1,11 +1,11 @@
-let AWS        = require('aws-sdk');
-let fs         = require('fs');
-let Group      = require('./modules/group');
-let log4js     = require('log4js');
+let AWS = require('aws-sdk');
+let fs = require('fs');
+let Group = require('./modules/group');
+let log4js = require('log4js');
 let Membership = require('./modules/membership');
 let MicroCache = require('micro-cache');
-let Search     = require('./modules/search');
-let util       = require('util');
+let Search = require('./modules/search');
+let util = require('util');
 
 let FileCertificate = {
   readCertificate: async (opts) => {
@@ -70,7 +70,7 @@ async function readCertificate(opts) {
 
 let UWGWS = {
   async initialize(options) {
-    let config = options;
+    let config = {...options};
     config.auth = await readCertificate(config.certInfo);
     config.cache = new MicroCache(
       options.cachePath,
@@ -95,9 +95,9 @@ let UWGWS = {
 
     config.log = log4js.getLogger();
 
-    this.group      = new Group(config);
+    this.group = new Group(config);
     this.membership = new Membership(config);
-    this.search     = new Search(config);
+    this.search = new Search(config);
 
     return this;
   }

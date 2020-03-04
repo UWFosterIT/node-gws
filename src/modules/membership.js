@@ -26,6 +26,18 @@ class Membership extends Service {
     return this._put(`group/${opt.id}/member/${opt.netid}${synchronized}`);
   }
 
+  // addBulk(opt) {
+  //   if (Array.isArray(opt.netid)) {
+  //     opt.netid = opt.netid.join(',');
+  //   }
+  //   let synchronized = '';
+  //   if (opt.sync !== undefined && opt.sync === true) {
+  //     synchronized = '?synchronized=true';
+  //   }
+
+  //   return this._put(`group/${opt.id}/member/${opt.netid}${synchronized}`);
+  // }
+
   del(opt) {
     if (!opt.netid) {
       return {

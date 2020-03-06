@@ -62,6 +62,22 @@ describe('Membership', () => {
       expect(result.message[0]).to.eql('See the notFound list for failed member puts');
     });
 
+    it.only('data passed into replaceMembership must contain at least one member', async () => {
+      const data =
+      {data: []};
+
+      let options = {
+        data,
+        id:   group,
+        sync: true
+      };
+
+      let result = await uwgws.membership.replaceMembership(options);
+      expect(result.statusCode).to.eql(404);
+      expect(result.error).to.eql(true);
+      expect(result.message[0]).to.eql('');
+    });
+
     it('should bulk add multiple members to a group', async () => {
       let options = {
         id:    group,

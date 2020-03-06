@@ -91,7 +91,7 @@ Endpoint  | Implementation
 ------------- | -------------
 [Membership - Get](https://wiki.cac.washington.edu/display/infra/Groups+WebService+Get+Members)  | `uwgws.membership.get(options)`
 [Membership - Update](https://wiki.cac.washington.edu/display/infra/Groups+WebService+Update+Members)  | `uwgws.membership.add(options)`
-[Membership - Update](https://wiki.cac.washington.edu/display/infra/Groups+WebService+Add+Member)  | `uwgws.membership.replaceMembership(options)`
+[Membership - Replace](https://wiki.cac.washington.edu/display/infra/Groups+WebService+Add+Member)  | `uwgws.membership.replaceMembership(options)`
 [Membership - Delete](https://wiki.cac.washington.edu/display/infra/Groups+WebService+Delete+Members)  | `uwgws.membership.del(options)`
 [Group - Create](https://wiki.cac.washington.edu/display/infra/Groups+WebService+Create+Group)  | `uwgws.group.create(options)`
 [Group - Delete](https://wiki.cac.washington.edu/display/infra/Groups+WebService+Delete+Group)  | `uwgws.group.del(options)`

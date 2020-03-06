@@ -1,4 +1,4 @@
-let Service = require('./service');
+const Service = require('./service');
 
 class Membership extends Service {
   constructor(config) {
@@ -26,28 +26,30 @@ class Membership extends Service {
     return this._put(`group/${opt.id}/member/${opt.netid}${synchronized}`);
   }
 
-  // addBulk(opt) {
-  //   if (Array.isArray(opt.netid)) {
-  //     opt.netid = opt.netid.join(',');
-  //   }
-  //   let synchronized = '';
-  //   if (opt.sync !== undefined && opt.sync === true) {
-  //     synchronized = '?synchronized=true';
-  //   }
+  replaceMembership(opt) {
+    let synchronized = '';
+    if (opt.sync !== undefined && opt.sync === true) {
+      synchronized = '?synchronized=true';
+    }
 
-  //   return this._put(`group/${opt.id}/member/${opt.netid}${synchronized}`);
-  // }
+    return this._put(`group/${opt.id}/member/${synchronized}`, opt.data);
+  }
 
   del(opt) {
     if (!opt.netid) {
       return {
         error:      true,
         message:    ['Member delete must include a list of id(s)'],
-        statusCode: 400
+        statusCode: 400,
       };
     }
 
-    return this._del(`group/${opt.id}/member/${opt.netid}`);
+    let synchronized = '';
+    if (opt.sync !== undefined && opt.sync === true) {
+      synchronized = '?synchronized=true';
+    }
+
+    return this._del(`group/${opt.id}/member/${opt.netid}${synchronized}`);
   }
 }
 

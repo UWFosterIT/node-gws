@@ -1,26 +1,25 @@
-let _       = require('underscore');
-let request = require('request');
-let util    = require('util');
+const _ = require('underscore');
+const request = require('request');
+const util = require('util');
 
 class Service {
   constructor(config) {
-    this.config    = config;
-    this.log       = config.log;
-    this.cache     = config.cache;
-    // this.templates = this._templates();
+    this.config = config;
+    this.log = config.log;
+    this.cache = config.cache;
   }
 
   _options(endpoint) {
     return {
       agentOptions: this.config.auth,
       uri:          this.config.baseUrl + endpoint,
-      uriCache:     endpoint.replace(/\//g, '')
+      uriCache:     endpoint.replace(/\//g, ''),
     };
   }
 
   _put(endpoint, groupData, etag) {
     return new Promise((fulfill, reject) => {
-      let options = this._options(endpoint);
+      const options = this._options(endpoint);
       if (groupData) {
         _.extend(options.headers, etag);
         options.body = groupData;
@@ -31,7 +30,7 @@ class Service {
         if (err) {
           reject(err);
         }
-        this.log.debug(`PUT -- ${options.uri}`);
+        this.log.debug(`PUT -- ${util.inspect(options, {depth: null})}`);
         fulfill(this._buildResult(response, body));
       });
     });
@@ -39,7 +38,7 @@ class Service {
 
   _del(endpoint) {
     return new Promise((fulfill, reject) => {
-      let options = this._options(endpoint);
+      const options = this._options(endpoint);
       options.json = true;
 
       request.del(options, (err, response, body) => {
@@ -57,7 +56,7 @@ class Service {
       // wild    no load no save
       // dryrun  load not save
       // record  load and save
-      let options = this._options(endpoint);
+      const options = this._options(endpoint);
       options.json = true;
       if (this.config.cacheMode === 'wild') {
         this.log.debug(`wild -- GET -- ${options.uri}`);
@@ -70,13 +69,12 @@ class Service {
         });
       } else if (this.config.cacheMode === 'dryrun') {
         this.log.debug(`dryrun for ${options.uri}`);
-        let body = this.cache.read(options.uriCache);
+        const body = this.cache.read(options.uriCache);
         if (body) {
-          let response = {};
+          const response = {};
           response.statusCode = 200;
           fulfill(this._buildResult(response, body));
         } else {
-
           request.get(options, (err, response, body) => {
             if (err) {
               reject(err);
@@ -86,13 +84,12 @@ class Service {
         }
       } else if (this.config.cacheMode === 'record') {
         this.log.debug(`record -- ${options.uri}`);
-        let body = this.cache.read(options.uriCache);
+        const body = this.cache.read(options.uriCache);
         if (body) {
-          let response = {};
+          const response = {};
           response.statusCode = 200;
           fulfill(this._buildResult(response, JSON.parse(body)));
         } else {
-
           request.get(options, (err, response, body) => {
             if (!err) {
               if (response.statusCode === 200) {
@@ -110,7 +107,7 @@ class Service {
 
   _buildResult(response, body) {
     this.log.debug(`Response body: ${util.inspect(body, {depth: null})}`);
-    let result = {};
+    const result = {};
     result.data = {};
     result.error = false;
     result.statusCode = response.statusCode;

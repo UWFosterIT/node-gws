@@ -31,7 +31,38 @@ describe('Membership', () => {
       expect(result.message[0]).to.eql('See the notFound list for failed member puts');
     });
 
-    it('should add multiple members to a group', async () => {
+    it('should replace entire membership of a group', async () => {
+      const data =
+      {
+        data: [
+          {
+            id:   'clooper',
+            type: 'uwnetid',
+          },
+          {
+            id:   'hc75',
+            type: 'uwnetid',
+          },
+          {
+            id:   'gabugabu',
+            type: 'uwnetid',
+          }
+        ]
+      };
+
+      let options = {
+        data,
+        id:   group,
+        sync: true
+      };
+
+      let result = await uwgws.membership.replaceMembership(options);
+      expect(result.statusCode).to.eql(200);
+      expect(result.error).to.eql(false);
+      expect(result.message[0]).to.eql('See the notFound list for failed member puts');
+    });
+
+    it('should bulk add multiple members to a group', async () => {
       let options = {
         id:    group,
         netid: ['dgale', 'gabugabu'],
@@ -213,7 +244,7 @@ describe('Membership', () => {
       let result = await uwgws.membership.get(options);
       expect(result.statusCode).to.eql(200);
       expect(result.error).to.eql(false);
-      expect(result.data.length).to.be.within(1, 5);
+      expect(result.data.length).to.be.within(1, 7);
       expect(result.message).to.be.undefined;
     });
 
@@ -237,7 +268,7 @@ describe('Membership', () => {
       expect(result.error).to.eql(false);
       expect(result.message).to.be.undefined;
       expect(Array.isArray(result.data)).to.eql(true);
-      expect(result.data.length).to.eql(11);
+      expect(result.data.length).to.eql(13);
     });
 
     // Error handling

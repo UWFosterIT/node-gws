@@ -1,6 +1,6 @@
 {
   "name": "uwgws",
-  "version": "5.3.1",
+  "version": "5.4.0",
   "description": "Client Library for University of Washington's Groups Web Service",
   "bugs:": {
     "url": "https://github.com/UWFosterIT/node-gws/issues"
@@ -20,27 +20,27 @@
   ],
   "dependencies": {
     "@types/aws-sdk": "^2.7.0",
-    "@types/node": "^10.12.9",
-    "aws-sdk": "^2.359.0",
-    "cheerio": "^1.0.0-rc.2",
-    "log4js": "^3.0.6",
+    "@types/node": "^13.9.0",
+    "aws-sdk": "^2.634.0",
+    "cheerio": "^1.0.0-rc.3",
+    "log4js": "^6.1.2",
     "micro-cache": "^2.3.0",
-    "query-string": "^6.2.0",
-    "request": "^2.88.0",
-    "underscore": "^1.9.1"
+    "query-string": "^6.11.1",
+    "request": "^2.88.2",
+    "underscore": "^1.9.2"
   },
   "devDependencies": {
-    "@types/chai": "^4.1.7",
-    "@types/chai-as-promised": "^7.1.0",
-    "@types/mocha": "^5.2.5",
-    "@types/sinon": "^5.0.7",
-    "@types/sinon-chai": "^3.2.1",
+    "@types/chai": "^4.2.10",
+    "@types/chai-as-promised": "^7.1.2",
+    "@types/mocha": "^7.0.2",
+    "@types/sinon": "^7.5.2",
+    "@types/sinon-chai": "^3.2.3",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
-    "eslint": "^5.9.0",
-    "mocha": "^5.2.0",
-    "sinon": "^7.1.1",
-    "sinon-chai": "^3.2.0"
+    "eslint": "^6.8.0",
+    "mocha": "^7.1.0",
+    "sinon": "^9.0.0",
+    "sinon-chai": "^3.5.0"
   },
   "scripts": {
     "lint": "eslint test/**/*.js src/**/*.js --fix; exit 0;",

@@ -78,7 +78,7 @@ describe('Search', () => {
     let directCount;
 
     it('should search by owner', async () => {
-      let query  = {owner: 'milesm'};
+      let query  = {owner: 'mercert'};
       let result = await uwgws.search.query(query);
 
       expect(result.statusCode).to.eql(200);
@@ -90,7 +90,7 @@ describe('Search', () => {
     it('should return more results with effective ownership', async () => {
       let query = {
         effective: true,
-        owner:     'milesm'
+        owner:     'mercert'
       };
       let result = await uwgws.search.query(query);
 

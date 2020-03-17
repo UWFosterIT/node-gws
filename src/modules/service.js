@@ -28,6 +28,7 @@ class Service {
 
       request.put(options, (err, response, body) => {
         if (err) {
+          this.log.debug(`PUT err ssagli ${util.inspect(err, {depth: null})}`);
           reject(err);
         }
         this.log.debug(`PUT -- ${util.inspect(options, {depth: null})}`);

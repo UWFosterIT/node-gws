@@ -32,7 +32,6 @@ class Service {
           reject(err);
         }
         this.log.debug(`PUT -- ${util.inspect(options, {depth: null})}`);
-        this.log.debug(`PUT response ssagli ${util.inspect(response, {depth: null})}`);
         fulfill(this._buildResult(response, body));
       });
     });
@@ -113,6 +112,9 @@ class Service {
     result.data = {};
     result.error = false;
     result.statusCode = response.statusCode;
+    this.log.debug(`ssagli response.statusCode ${util.inspect(response.statusCode, {depth: null})}`);
+    this.log.debug(`ssagli response.statusMessage ${util.inspect(response.statusMessage, {depth: null})}`);
+    this.log.debug(`ssagli response.message ${util.inspect(response.message, {depth: null})}`);
     if (result.statusCode !== 200 && result.statusCode !== 201) {
       result.error = true;
       result.message = body.errors[0].detail;

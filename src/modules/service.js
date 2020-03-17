@@ -32,6 +32,7 @@ class Service {
           reject(err);
         }
         this.log.debug(`PUT -- ${util.inspect(options, {depth: null})}`);
+        this.log.debug(`PUT response ssagli ${util.inspect(response, {depth: null})}`);
         fulfill(this._buildResult(response, body));
       });
     });

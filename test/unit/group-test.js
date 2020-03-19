@@ -1,6 +1,6 @@
 require('../setup');
 
-describe('Group', function () {
+describe('Group', () => {
 
   let options = {
     admins: [{
@@ -28,7 +28,7 @@ describe('Group', function () {
     await uwgws.initialize(config);
   });
 
-  before(async () => {
+  after(async () => {
     await uwgws.initialize(config);
     await uwgws.group.del({id: options.id});
   });
@@ -42,7 +42,8 @@ describe('Group', function () {
 
   it('should get a group', async () => {
     let query  = {id: options.id};
-    let result = await uwgws.group.get(query);
+    let result = await uwgws.group.get(query)
+      .catch(err => console.log('should get a group errrrrr', err));
     expect(result.error).to.eql(false);
     expect(result.statusCode).to.eql(200);
     expect(result.message).to.be.undefined;
@@ -53,6 +54,7 @@ describe('Group', function () {
 
   it('should delete a group', async () => {
     let resultDel = await uwgws.group.del({id: options.id});
+    console.log('resultDel', resultDel);
     expect(resultDel.statusCode).to.eql(200);
     expect(resultDel.error).to.eql(false);
     expect(resultDel.message[0]).to.eql('deleted');
@@ -88,7 +90,8 @@ describe('Group', function () {
   // Error handling
   it('should return an error when getting an invalid group', async () => {
     let query  = {id: nonGroup};
-    let result = await uwgws.group.get(query);
+    let result = await uwgws.group.get(query)
+      .catch(err => console.log('should return an error when getting an invalid group errrrrr', err));
     expect(result.statusCode).to.eql(404);
     expect(result.error).to.eql(true);
     expect(result.message.length).to.eql(1);

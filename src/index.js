@@ -65,13 +65,21 @@ async function readCertificate(opts) {
       throw Error('Certificate reader not supported');
   }
 
-  return await certReader.readCertificate(opts);
+  return certReader.readCertificate(opts)
+    .catch(err => {
+      console.log('certReader.readCertificate error', err)
+      throw new Error(err);
+    });
 }
 
 let UWGWS = {
   async initialize(options) {
-    let config = {...options};
-    config.auth = await readCertificate(config.certInfo);
+    let config = {...options };
+    config.auth = await readCertificate(config.certInfo)
+    .catch(err => {
+      console.log('readCertificate err!!', err)
+      throw new Error(err);
+    });
     config.cache = new MicroCache(
       options.cachePath,
       options.logLevel,
@@ -106,6 +114,24 @@ let UWGWS = {
 module.exports = UWGWS;
 
 process.on('unhandledRejection', (reason, p) => {
-  console.error(`Promise: ${util.inspect(p)}\nReason: ${reason}`);
+  // console.error(`Promise: ${util.inspect(p)}\nReason: ${reason}`);
   process.exit(1);
 });
+
+process.on('rejectionHandled', (reason, promise) => {
+  console.log('rejectionHandled reason', reason);
+});
+process.on('uncaughtException', (err, origin) => {
+  console.log('uncaughtException err', err);
+  console.log('uncaughtException origin', origin);
+});
+process.on('exit', (code) => {
+  console.log('About to exit with code', code);
+});
+process.on('disconnect', (code) => {
+  console.log('disconnect', code);
+});
+// process.on('multipleResolves', (type, p, reason) => {
+//   console.log('multipleResolves type', type);
+//   console.log('multipleResolves reason', reason);
+// });

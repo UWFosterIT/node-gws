@@ -67,7 +67,6 @@ async function readCertificate(opts) {
 
   return certReader.readCertificate(opts)
     .catch(err => {
-      console.log('certReader.readCertificate error', err)
       throw new Error(err);
     });
 }
@@ -77,7 +76,6 @@ let UWGWS = {
     let config = {...options };
     config.auth = await readCertificate(config.certInfo)
     .catch(err => {
-      console.log('readCertificate err!!', err)
       throw new Error(err);
     });
     config.cache = new MicroCache(
@@ -131,7 +129,7 @@ process.on('exit', (code) => {
 process.on('disconnect', (code) => {
   console.log('disconnect', code);
 });
-// process.on('multipleResolves', (type, p, reason) => {
-//   console.log('multipleResolves type', type);
-//   console.log('multipleResolves reason', reason);
-// });
+// // process.on('multipleResolves', (type, p, reason) => {
+// //   console.log('multipleResolves type', type);
+// //   console.log('multipleResolves reason', reason);
+// // });

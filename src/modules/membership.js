@@ -20,7 +20,7 @@ class Membership extends Service {
     }
     let synchronized = '';
     if (opt.sync !== undefined && opt.sync === true) {
-      synchronized = '?synchronized=true';
+      synchronized = '?synchronized=synchronized';
     }
 
     return this._put(`group/${opt.id}/member/${opt.netid}${synchronized}`);

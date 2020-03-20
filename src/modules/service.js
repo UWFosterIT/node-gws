@@ -29,7 +29,7 @@ class Service {
 
     return rp.put(options)
       .then((response) => {
-        console.log('response ssagli', response);
+        console.log('response.body ssagli', response.body);
         console.log('statusCode ssagli', response.statusCode);
         return this._buildResult(response, response.body);
       })

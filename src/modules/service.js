@@ -17,6 +17,8 @@ class Service {
       uriCache:                endpoint.replace(/\//g, ''),
       resolveWithFullResponse: true,
       timeout:                 300000,
+      agent:                   false,
+      pool:                    {maxSockets: Infinity},
     };
   }
 

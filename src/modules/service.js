@@ -16,6 +16,7 @@ class Service {
       uri:                     this.config.baseUrl + endpoint,
       uriCache:                endpoint.replace(/\//g, ''),
       resolveWithFullResponse: true,
+      timeout:                 300000,
     };
   }
 

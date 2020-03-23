@@ -15,7 +15,7 @@ Note: Version 5.0.0 and later use the GWS v3 JSON API. Responses from this libra
 
 First setup a config object to hold variables for your x509 cert and key as well as some optional caching of responses from the service. Cache options are detailed in the [micro-cache](https://www.npmjs.com/package/micro-cache) node module.
 
-The certInfo object should only contain either a file or an s3 object. If you include both, only the file object will be picked up.
+The certInfo object should only contain either a file or an s3 object. If you include both, only the file object will be picked up. Comment out one or the other.
 
 ```JavaScript
 let uwgws = require('uwgws');

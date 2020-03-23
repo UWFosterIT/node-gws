@@ -1,5 +1,4 @@
 const _ = require('underscore');
-const request = require('request');
 const rp = require('request-promise');
 const util = require('util');
 
@@ -32,49 +31,23 @@ class Service {
 
     return rp.put(options)
       .then((response) => {
-        console.log('response.body ssagli', response.body);
-        console.log('statusCode ssagli', response.statusCode);
         return this._buildResult(response, response.body);
       })
       .catch((err) => {
-        console.log('err put', err);
-        // return err;
         return this._buildErrorResult(err);
-        // throw new Error(err);
       });
-    // (err, response, body) => {
-    //   if (err) {
-    //     this.log.debug(`PUT err ssagli ${util.inspect(err, {depth: null})}`);
-    //     reject(err);
-    //   }
-    //   this.log.debug(`PUT -- ${util.inspect(options, {depth: null})}`);
-    //   fulfill(this._buildResult(response, body));
-    // }
   }
 
   _del(endpoint) {
-    // return new Promise((fulfill, reject) => {
     const options = this._options(endpoint);
     options.json = true;
     return rp.del(options)
       .then((response) => {
-        // console.log('DELETE response', response);
         return this._buildResult(response, response.body);
       })
       .catch((err) => {
-        // console.log('err del', err);
-        // return err;
         return this._buildErrorResult(err);
-        // throw new Error(err);
       });
-    // rp.del(options, (err, response, body) => {
-    //   if (err) {
-    //     reject(err);
-    //   }
-    //   this.log.debug(`DELETE -- ${options.uri}`);
-    //   fulfill(this._buildResult(response, body));
-    // });
-    // });
   }
 
   _get(endpoint) {
@@ -91,10 +64,7 @@ class Service {
           return this._buildResult(response, response.body);
         })
         .catch((err) => {
-          console.log('err1', err);
-          // return err;
           return this._buildErrorResult(err);
-          // throw new Error(err);
         });
     } else if (this.config.cacheMode === 'dryrun') {
       this.log.debug(`dryrun for ${options.uri}`);
@@ -111,8 +81,7 @@ class Service {
           return this._buildResult(response, response.body);
         })
         .catch((err) => {
-          console.log('err2', err);
-          throw new Error(err);
+          return this._buildErrorResult(err);
         });
 
     } else if (this.config.cacheMode === 'record') {
@@ -133,8 +102,7 @@ class Service {
           return this._buildResult(response, response.body);
         })
         .catch((err) => {
-          console.log('err3', err);
-          throw new Error(err);
+          return this._buildErrorResult(err);
         });
     }
   }

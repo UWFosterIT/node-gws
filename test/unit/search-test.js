@@ -1,15 +1,32 @@
 /* eslint-disable max-nested-callbacks */
-require('../setup');
+const chai = require('chai');
+const chaiAsPromised = require('chai-as-promised');
+const sinon = require('sinon');
+const sinonChai = require('sinon-chai');
+const config = require('../setup/config');
+const uwgws = require('../../src/index');
+
+chai.use(sinonChai);
+chai.use(chaiAsPromised);
+const { expect } = chai;
 
 describe('Search', () => {
-
   beforeEach(async () => {
+    this.sandbox = sinon.createSandbox();
+    this.stub = this.sandbox.stub.bind(this.sandbox);
+    this.spy = this.sandbox.spy.bind(this.sandbox);
     await uwgws.initialize(config);
   });
 
+  afterEach(() => {
+    this.stub = undefined;
+    this.spy = undefined;
+    this.sandbox.restore();
+  });
+
   it('should search by group name', async () => {
-    let query  = {name: '*student*'};
-    let result = await uwgws.search.query(query);
+    const query = { name: '*student*' };
+    const result = await uwgws.search.query(query);
 
     expect(result.statusCode).to.eql(200);
     expect(result.error).to.eql(false);
@@ -21,8 +38,8 @@ describe('Search', () => {
     let scopedCount;
 
     it('should search by stem', async () => {
-      let query = {stem: 'uw_foster_staff'};
-      let result = await uwgws.search.query(query);
+      const query = { stem: 'uw_foster_staff' };
+      const result = await uwgws.search.query(query);
 
       expect(result.statusCode).to.eql(200);
       expect(Array.isArray(result.data)).to.eql(true);
@@ -33,11 +50,11 @@ describe('Search', () => {
     // Disabling this for now. Functionality of GWS API seems broken.
 
     it('should return more results with wider scope', async () => {
-      let query = {
+      const query = {
         scope: 'all',
-        stem:  'uw_foster_staff'
+        stem: 'uw_foster_staff',
       };
-      let result = await uwgws.search.query(query);
+      const result = await uwgws.search.query(query);
 
       expect(result.statusCode).to.eql(200);
       expect(result.error).to.eql(false);
@@ -51,8 +68,8 @@ describe('Search', () => {
     let directCount;
 
     it('should search by member', async () => {
-      let query  = {member: 'fostserv'};
-      let result = await uwgws.search.query(query);
+      const query = { member: 'fostserv' };
+      const result = await uwgws.search.query(query);
 
       expect(result.statusCode).to.eql(200);
       expect(Array.isArray(result.data)).to.eql(true);
@@ -61,11 +78,11 @@ describe('Search', () => {
     });
 
     it('should return more results with effective membership', async () => {
-      let query = {
+      const query = {
         effective: true,
-        member:    'fostserv'
+        member: 'fostserv',
       };
-      let result = await uwgws.search.query(query);
+      const result = await uwgws.search.query(query);
 
       expect(result.statusCode).to.eql(200);
       expect(Array.isArray(result.data)).to.eql(true);
@@ -78,8 +95,8 @@ describe('Search', () => {
     let directCount;
 
     it('should search by owner', async () => {
-      let query  = {owner: 'mercert'};
-      let result = await uwgws.search.query(query);
+      const query = { owner: 'mercert' };
+      const result = await uwgws.search.query(query);
 
       expect(result.statusCode).to.eql(200);
       expect(Array.isArray(result.data)).to.eql(true);
@@ -88,11 +105,11 @@ describe('Search', () => {
     });
 
     it('should return more results with effective ownership', async () => {
-      let query = {
+      const query = {
         effective: true,
-        owner:     'mercert'
+        owner: 'mercert',
       };
-      let result = await uwgws.search.query(query);
+      const result = await uwgws.search.query(query);
 
       expect(result.statusCode).to.eql(200);
       expect(Array.isArray(result.data)).to.eql(true);
@@ -100,5 +117,4 @@ describe('Search', () => {
       expect(result.data.length).to.be.greaterThan(directCount);
     });
   });
-
 });

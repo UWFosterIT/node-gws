@@ -1,14 +1,19 @@
 {
   "cSpell.words": [
+    "agentkeepalive",
+    "appenders",
     "authn",
     "authnfactor",
+    "clooper",
     "createtime",
     "dependson",
+    "dryrun",
     "etag",
     "factor",
     "netid",
     "newstem",
     "regid",
-    "uwgws"
+    "uwgws",
+    "uwnetid"
   ]
 }

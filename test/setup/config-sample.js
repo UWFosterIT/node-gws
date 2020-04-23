@@ -1,12 +1,12 @@
-let config = {
-  baseUrl:   'https://iam-ws.u.washington.edu/group_sws/v3/',
-  cacheExt:  '.json',
+const config = {
+  baseUrl: 'https://iam-ws.u.washington.edu/group_sws/v3/',
+  cacheExt: '.json',
   cacheMode: 'wild',
   cachePath: '.cache/',
-  certInfo:  {
+  certInfo: {
     file: {
       cert: 'PATH TO LOCAL CERT',
-      key:  'PATH TO LOCAL KEY'
+      key: 'PATH TO LOCAL KEY',
     },
     // s3: {
     //   certBucket: 'CERT AWS BUCKET',

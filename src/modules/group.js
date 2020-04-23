@@ -1,33 +1,16 @@
-let Service = require('./service');
+const Service = require('./service');
 
 class Group extends Service {
-  constructor(config) {
-    super(config);
-  }
-
-  _entities(selector, query) {
-    let list = [];
-    query('li', selector).each(function () {
-      let item = {
-        id:   query(this).text(),
-        type: query(this).attr('type')
-      };
-      list.push(item);
-    });
-
-    return list;
-  }
-
   get(opt) {
-    return this._get(`group/${opt.id}`);
+    return super.get(`group/${opt.id}`);
   }
 
   create(opts) {
-    let etag = {
-      'ETag':     '',
-      'if-match': '*'
+    const etag = {
+      ETag: '',
+      'if-match': '*',
     };
-    let groupData = {};
+    const groupData = {};
     groupData.data = opts;
 
     let synchronized = '';
@@ -35,23 +18,23 @@ class Group extends Service {
       synchronized = '?synchronized';
     }
 
-    return this._put(`group/${opts.id}${synchronized}`, groupData, etag);
+    return super.put(`group/${opts.id}${synchronized}`, groupData, etag);
   }
 
-  del(opt) {
-    return this._del(`group/${opt.id}`);
+  async del(opt) {
+    return super.del(`group/${opt.id}`);
   }
 
   exchangeEnable(opt) {
-    return this._put(`group/${opt.id}/affiliate/email?status=active&sender=${opt.sender}`);
+    return super.put(`group/${opt.id}/affiliate/email?status=active&sender=${opt.sender}`);
   }
 
   history(opt) {
-    return this._get(`group/${opt.id}/history`);
+    return super.get(`group/${opt.id}/history`);
   }
 
   move(opt) {
-    return this._put(`groupMove/${opt.id}?newstem=${opt.newStem}`);
+    return super.put(`groupMove/${opt.id}?newstem=${opt.newStem}`);
   }
 }
 

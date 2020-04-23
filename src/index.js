@@ -1,62 +1,66 @@
-let AWS = require('aws-sdk');
-let fs = require('fs');
-let Group = require('./modules/group');
-let log4js = require('log4js');
-let Membership = require('./modules/membership');
-let MicroCache = require('micro-cache');
-let Search = require('./modules/search');
-let util = require('util');
+const AWS = require('aws-sdk');
+const fs = require('fs');
+const log4js = require('@log4js-node/log4js-api');
+const util = require('util');
+const _ = require('lodash');
+const MicroCache = require('micro-cache');
+const Group = require('./modules/group');
+const Membership = require('./modules/membership');
+const Search = require('./modules/search');
 
-let FileCertificate = {
+const FileCertificate = {
   readCertificate: async (opts) => {
-    if (opts.cert === '' || opts.key === '' ||
-      !fs.existsSync(opts.cert) || !fs.existsSync(opts.key)) {
+    if (opts.cert === '' || opts.key === ''
+      // eslint-disable-next-line security/detect-non-literal-fs-filename
+      || !fs.existsSync(opts.cert) || !fs.existsSync(opts.key)) {
       throw new Error(`Client cert '${opts.cert}' or key '${opts.key}' can not be found`);
     }
 
     return {
-      cert:               fs.readFileSync(opts.cert),
-      key:                fs.readFileSync(opts.key),
-      rejectUnauthorized: false
+      // eslint-disable-next-line security/detect-non-literal-fs-filename
+      cert: fs.readFileSync(opts.cert),
+      // eslint-disable-next-line security/detect-non-literal-fs-filename
+      key: fs.readFileSync(opts.key),
+      rejectUnauthorized: false,
     };
-  }
+  },
 };
 
-let S3Certificate = {
+const S3Certificate = {
   readCertificate: async (opts) => {
-    let s3 = new AWS.S3();
-    let cert = await s3.getObject({
+    const s3 = new AWS.S3();
+    const cert = await s3.getObject({
       Bucket: opts.certBucket,
-      Key:    opts.certKey
+      Key: opts.certKey,
     }).promise().catch((err) => {
       throw Error('S3 get cert error', err);
     });
-    let key = await s3.getObject({
+    const key = await s3.getObject({
       Bucket: opts.keyBucket,
-      Key:    opts.keyKey
+      Key: opts.keyKey,
     }).promise().catch((err) => {
       throw Error('S3 get key error', err);
     });
 
     return {
-      cert:               cert.Body,
-      key:                key.Body,
-      rejectUnauthorized: false
+      cert: cert.Body,
+      key: key.Body,
+      rejectUnauthorized: false,
     };
-  }
+  },
 };
 
-async function readCertificate(opts) {
+async function readCertificate(options) {
   let certReader;
+  let opts = options;
 
   switch (true) {
-
-    case opts.hasOwnProperty('file'):
+    case _.has(opts, 'file'):
       certReader = Object.create(FileCertificate);
       opts = opts.file;
       break;
 
-    case opts.hasOwnProperty('s3'):
+    case _.has(opts, 's3'):
       certReader = Object.create(S3Certificate);
       opts = opts.s3;
       break;
@@ -65,42 +69,27 @@ async function readCertificate(opts) {
       throw Error('Certificate reader not supported');
   }
 
-  return await certReader.readCertificate(opts);
+  return certReader.readCertificate(opts);
 }
 
-let UWGWS = {
+const UWGWS = {
   async initialize(options) {
-    let config = {...options};
+    const config = { ...options };
     config.auth = await readCertificate(config.certInfo);
     config.cache = new MicroCache(
       options.cachePath,
       options.logLevel,
-      options.cacheExt
+      options.cacheExt,
     );
 
-    log4js.configure({
-      appenders: {
-        out: {
-          layout: {type: 'colored'},
-          type:   'stdout',
-        }
-      },
-      categories: {
-        default: {
-          appenders: ['out'],
-          level:     process.env.LOG_LEVEL || config.logLevel || 'info'
-        }
-      }
-    });
-
-    config.log = log4js.getLogger();
+    config.log = log4js.getLogger('node-gws');
 
     this.group = new Group(config);
     this.membership = new Membership(config);
     this.search = new Search(config);
 
     return this;
-  }
+  },
 };
 
 module.exports = UWGWS;

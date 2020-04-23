@@ -1,5 +1,5 @@
-const _ = require('underscore');
-const request = require('request');
+const _ = require('lodash');
+const got = require('got');
 const util = require('util');
 
 class Service {
@@ -9,104 +9,71 @@ class Service {
     this.cache = config.cache;
   }
 
-  _options(endpoint) {
+  options(endpoint) {
     return {
-      agentOptions: this.config.auth,
-      uri:          this.config.baseUrl + endpoint,
-      uriCache:     endpoint.replace(/\//g, ''),
+      agent: false,
+      cert: this.config.auth.cert,
+      key: this.config.auth.key,
+      url: this.config.baseUrl + endpoint,
+      uriCache: endpoint.replace(/\//g, ''),
     };
   }
 
-  _put(endpoint, groupData, etag) {
-    return new Promise((fulfill, reject) => {
-      const options = this._options(endpoint);
-      if (groupData) {
-        _.extend(options.headers, etag);
-        options.body = groupData;
+  async put(endpoint, groupData, etag) {
+    const options = this.options(endpoint);
+    if (groupData) {
+      _.extend(options.headers, etag);
+      options.json = groupData;
+    }
+
+    const response = await got.put(options)
+      .catch((err) => err.response);
+    this.log.debug(`PUT -- ${util.inspect(options.url, { depth: null })}`);
+    return this.buildResult(response);
+  }
+
+  async del(endpoint) {
+    const options = this.options(endpoint);
+    const response = await got.delete(options)
+      .catch((err) => err.response);
+    this.log.debug(`DELETE -- ${options.url}`);
+    return this.buildResult(response);
+  }
+
+  async get(endpoint) {
+    // wild    no load no save
+    // dryrun  load not save
+    // record  load and save
+    const options = this.options(endpoint);
+    const { cacheMode } = this.config;
+    let response = {};
+
+    if (cacheMode !== 'wild') {
+      const body = this.cache.read(options.uriCache);
+
+      if (body) {
+        response.statusCode = 200;
+        response.body = body;
+        this.log.debug(`${cacheMode} cache hit for ${options.url}`);
+      } else {
+        this.log.debug(`${cacheMode} cache miss for ${options.url}`);
       }
-      options.json = true;
+    }
 
-      request.put(options, (err, response, body) => {
-        if (err) {
-          reject(err);
-        }
-        this.log.debug(`PUT -- ${util.inspect(options, {depth: null})}`);
-        fulfill(this._buildResult(response, body));
-      });
-    });
+
+    response = await got.get(options)
+      .catch((err) => err.response);
+
+    if (cacheMode === 'record' && !!response.body) {
+      this.cache.write(options.uriCache, response.body, true);
+    }
+
+    return this.buildResult(response);
   }
 
-  _del(endpoint) {
-    return new Promise((fulfill, reject) => {
-      const options = this._options(endpoint);
-      options.json = true;
-
-      request.del(options, (err, response, body) => {
-        if (err) {
-          reject(err);
-        }
-        this.log.debug(`DELETE -- ${options.uri}`);
-        fulfill(this._buildResult(response, body));
-      });
-    });
-  }
-
-  _get(endpoint) {
-    return new Promise((fulfill, reject) => {
-      // wild    no load no save
-      // dryrun  load not save
-      // record  load and save
-      const options = this._options(endpoint);
-      options.json = true;
-      if (this.config.cacheMode === 'wild') {
-        this.log.debug(`wild -- GET -- ${options.uri}`);
-
-        request.get(options, (err, response, body) => {
-          if (err) {
-            reject(err);
-          }
-          fulfill(this._buildResult(response, body));
-        });
-      } else if (this.config.cacheMode === 'dryrun') {
-        this.log.debug(`dryrun for ${options.uri}`);
-        const body = this.cache.read(options.uriCache);
-        if (body) {
-          const response = {};
-          response.statusCode = 200;
-          fulfill(this._buildResult(response, body));
-        } else {
-          request.get(options, (err, response, body) => {
-            if (err) {
-              reject(err);
-            }
-            fulfill(this._buildResult(response, body));
-          });
-        }
-      } else if (this.config.cacheMode === 'record') {
-        this.log.debug(`record -- ${options.uri}`);
-        const body = this.cache.read(options.uriCache);
-        if (body) {
-          const response = {};
-          response.statusCode = 200;
-          fulfill(this._buildResult(response, JSON.parse(body)));
-        } else {
-          request.get(options, (err, response, body) => {
-            if (!err) {
-              if (response.statusCode === 200) {
-                this.cache.write(options.uriCache, JSON.stringify(body), true);
-              }
-              fulfill(this._buildResult(response, body));
-            } else {
-              reject(err);
-            }
-          });
-        }
-      }
-    });
-  }
-
-  _buildResult(response, body) {
-    this.log.debug(`Response body: ${util.inspect(body, {depth: null})}`);
+  buildResult(response) {
+    const body = JSON.parse(response.body);
+    this.log.trace(`Response body: ${util.inspect(body, { depth: null })}`);
     const result = {};
     result.data = {};
     result.error = false;

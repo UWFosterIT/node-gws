@@ -102,7 +102,7 @@ Endpoint  | Implementation
 
 The group service behind the GWS API uses LDAP caches to improve reliability and response time for some requests. The caches may take several seconds to update after changes to GWS are made. This can cause inconsistency in that you may not 'read what you wrote' during the time the cache is invalid.
 
-If you need to ensure cache consistency, you can add `sync: true` to the options of group create and membership add operations.
+If you need to ensure cache consistency, you can add `sync: true` to the options of group create and membership add operations. Note: query sting GWS is expecting is `/?synchronized` not `/?synchronized=true`
 
 ## Development
 

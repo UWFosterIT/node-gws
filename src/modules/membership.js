@@ -20,7 +20,7 @@ class Membership extends Service {
     }
     let synchronized = '';
     if (opt.sync !== undefined && opt.sync === true) {
-      synchronized = '?synchronized=true';
+      synchronized = '?synchronized';
     }
 
     return this._put(`group/${opt.id}/member/${opt.netid}${synchronized}`);
@@ -29,7 +29,7 @@ class Membership extends Service {
   replaceMembership(opt) {
     let synchronized = '';
     if (opt.sync !== undefined && opt.sync === true) {
-      synchronized = '?synchronized=true';
+      synchronized = '?synchronized';
     }
 
     return this._put(`group/${opt.id}/member/${synchronized}`, opt.data);
@@ -46,7 +46,7 @@ class Membership extends Service {
 
     let synchronized = '';
     if (opt.sync !== undefined && opt.sync === true) {
-      synchronized = '?synchronized=true';
+      synchronized = '?synchronized';
     }
 
     return this._del(`group/${opt.id}/member/${opt.netid}${synchronized}`);

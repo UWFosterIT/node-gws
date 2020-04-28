@@ -61,6 +61,7 @@ class Service {
     }
 
 
+    this.log.debug(`GET -- ${util.inspect(options.url, { depth: null })}`);
     response = await got.get(options)
       .catch((err) => err.response);
 

@@ -54,8 +54,11 @@
     "node": ">=12.10.0"
   },
   "eslintConfig": {
+    "root": true,
     "env": {
-      "mocha": true
+      "mocha": true,
+      "node": true,
+      "es2017": true
     },
     "plugins": [
       "security",

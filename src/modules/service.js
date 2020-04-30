@@ -27,7 +27,13 @@ class Service {
     }
 
     const response = await got.put(options)
-      .catch((err) => err.response);
+      .catch((err) => {
+        if (!err.response) {
+          this.log.error(`${err.name}: ${err.message}`);
+          throw new Error('Unable to make PUT request');
+        }
+        return err.response;
+      });
     this.log.debug(`PUT -- ${util.inspect(options.url, { depth: null })}`);
     return this.buildResult(response);
   }
@@ -35,7 +41,13 @@ class Service {
   async del(endpoint) {
     const options = this.options(endpoint);
     const response = await got.delete(options)
-      .catch((err) => err.response);
+      .catch((err) => {
+        if (!err.response) {
+          this.log.error(`${err.name}: ${err.message}`);
+          throw new Error('Unable to make DELETE request');
+        }
+        return err.response;
+      });
     this.log.debug(`DELETE -- ${options.url}`);
     return this.buildResult(response);
   }
@@ -63,7 +75,13 @@ class Service {
 
     this.log.debug(`GET -- ${util.inspect(options.url, { depth: null })}`);
     response = await got.get(options)
-      .catch((err) => err.response);
+      .catch((err) => {
+        if (!err.response) {
+          this.log.error(`${err.name}: ${err.message}`);
+          throw new Error('Unable to make GET request');
+        }
+        return err.response;
+      });
 
     if (cacheMode === 'record' && !!response.body) {
       this.cache.write(options.uriCache, response.body, true);

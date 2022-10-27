@@ -12,7 +12,7 @@ describe('Membership', () => {
   // remove group created by tests
   after(async () => {
     await uwgws.initialize(config);
-    await uwgws.group.del({ id: group });
+    await uwgws.group.del({ id: group, sync: true });
   });
 
   describe('Add', () => {
@@ -167,6 +167,7 @@ describe('Membership', () => {
       const options = {
         id: group,
         netid: 'schad',
+        sync: true,
       };
 
       const result = await uwgws.membership.del(options);
@@ -179,6 +180,7 @@ describe('Membership', () => {
       const options = {
         id: group,
         netid: 'schad',
+        sync: true,
       };
 
       const result = await uwgws.membership.del(options);
@@ -191,6 +193,7 @@ describe('Membership', () => {
       const options = {
         id: group,
         netid: 'schadfakenetidn',
+        sync: true,
       };
 
       const result = await uwgws.membership.del(options);
@@ -224,7 +227,7 @@ describe('Membership', () => {
     });
 
     it('should not delete all members from the group', async () => {
-      const options = { id: group };
+      const options = { id: group, sync: true };
 
       const result = await uwgws.membership.del(options);
       expect(result.statusCode).to.equal(400);
@@ -277,7 +280,6 @@ describe('Membership', () => {
       expect(result.error).to.eql(true);
       expect(result.message.length).to.equal(1);
     });
-
 
     it('history for an invalid group returns an error', async () => {
       const query = { id: nonGroup };

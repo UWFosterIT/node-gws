@@ -1,5 +1,4 @@
 const _ = require('lodash');
-const got = require('got');
 const util = require('util');
 
 class Service {
@@ -7,14 +6,18 @@ class Service {
     this.config = config;
     this.log = config.log;
     this.cache = config.cache;
+    this.got = config.got;
   }
 
   options(endpoint) {
     return {
-      agent: false,
-      cert: this.config.auth.cert,
-      key: this.config.auth.key,
-      url: this.config.baseUrl + endpoint,
+      request: {
+        https: {
+          certificate: this.config.auth.cert,
+          key: this.config.auth.key,
+        },
+        url: this.config.baseUrl + endpoint,
+      },
       uriCache: endpoint.replace(/\//g, ''),
     };
   }
@@ -22,11 +25,15 @@ class Service {
   async put(endpoint, groupData, etag) {
     const options = this.options(endpoint);
     if (groupData) {
-      _.extend(options.headers, etag);
-      options.json = groupData;
+      _.extend(options.request.headers, etag);
+      options.request.json = groupData;
     }
 
-    const response = await got.put(options)
+    if (this.config.cacheMode !== 'wild') {
+      this.cache.remove(options.uriCache);
+    }
+
+    const response = await this.got.put(options.request)
       .catch((err) => {
         if (!err.response) {
           this.log.error(`${err.name}: ${err.message}`);
@@ -34,13 +41,18 @@ class Service {
         }
         return err.response;
       });
-    this.log.debug(`PUT -- ${util.inspect(options.url, { depth: null })}`);
+    this.log.debug(`PUT -- ${util.inspect(options.request.url, { depth: null })}`);
     return this.buildResult(response);
   }
 
   async del(endpoint) {
     const options = this.options(endpoint);
-    const response = await got.delete(options)
+
+    if (this.config.cacheMode !== 'wild') {
+      this.cache.remove(options.uriCache);
+    }
+
+    const response = await this.got.delete(options.request)
       .catch((err) => {
         if (!err.response) {
           this.log.error(`${err.name}: ${err.message}`);
@@ -48,7 +60,7 @@ class Service {
         }
         return err.response;
       });
-    this.log.debug(`DELETE -- ${options.url}`);
+    this.log.debug(`DELETE -- ${options.request.url}`);
     return this.buildResult(response);
   }
 
@@ -57,24 +69,21 @@ class Service {
     // dryrun  load not save
     // record  load and save
     const options = this.options(endpoint);
-    const { cacheMode } = this.config;
     let response = {};
 
-    if (cacheMode !== 'wild') {
+    if (this.config.cacheMode !== 'wild') {
       const body = this.cache.read(options.uriCache);
-
       if (body) {
         response.statusCode = 200;
         response.body = body;
-        this.log.debug(`${cacheMode} cache hit for ${options.url}`);
+        this.log.debug(`${this.config.cacheMode} cache hit for ${options.request.url}`);
       } else {
-        this.log.debug(`${cacheMode} cache miss for ${options.url}`);
+        this.log.debug(`${this.config.cacheMode} cache miss for ${options.request.url}`);
       }
     }
 
-
-    this.log.debug(`GET -- ${util.inspect(options.url, { depth: null })}`);
-    response = await got.get(options)
+    this.log.debug(`GET -- ${util.inspect(options.request.url, { depth: null })}`);
+    response = await this.got.get(options.request)
       .catch((err) => {
         if (!err.response) {
           this.log.error(`${err.name}: ${err.message}`);
@@ -83,7 +92,7 @@ class Service {
         return err.response;
       });
 
-    if (cacheMode === 'record' && !!response.body) {
+    if (this.config.cacheMode === 'record' && !response.body.errors) {
       this.cache.write(options.uriCache, response.body, true);
     }
 
@@ -91,7 +100,13 @@ class Service {
   }
 
   buildResult(response) {
-    const body = JSON.parse(response.body);
+    let body;
+    try {
+      body = JSON.parse(response.body);
+    } catch (error) {
+      this.log.error(`Bad JSON response: ${response.body}`);
+      throw error;
+    }
     this.log.trace(`Response body: ${util.inspect(body, { depth: null })}`);
     const result = {};
     result.data = {};

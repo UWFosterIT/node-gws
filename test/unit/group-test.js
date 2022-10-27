@@ -29,7 +29,7 @@ describe('Group', () => {
 
   before(async () => {
     await uwgws.initialize(config);
-    await uwgws.group.del({ id: options.id });
+    await uwgws.group.del({ id: options.id, sync: true });
   });
 
   it('should create a group', async () => {
@@ -51,7 +51,7 @@ describe('Group', () => {
   });
 
   it('should delete a group', async () => {
-    const resultDel = await uwgws.group.del({ id: options.id });
+    const resultDel = await uwgws.group.del({ id: options.id, sync: true });
     expect(resultDel.statusCode).to.eql(200);
     expect(resultDel.error).to.eql(false);
     expect(resultDel.message[0]).to.eql('deleted');
@@ -69,6 +69,7 @@ describe('Group', () => {
     const query = {
       id: 'uw_foster_student_move',
       newStem: 'uw_foster_staff',
+      sync: true,
     };
     const result = await uwgws.group.move(query);
     expect(result.statusCode).to.eql(200);
@@ -81,7 +82,7 @@ describe('Group', () => {
     expect(getRes.data.contact).to.eql('gabugabu');
     expect(getRes.data.displayName).to.eql('Foster GWS Test');
 
-    await uwgws.group.del({ id: 'uw_foster_staff_move' });
+    await uwgws.group.del({ id: 'uw_foster_staff_move', sync: true });
   });
 
   // Error handling

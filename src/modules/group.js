@@ -21,8 +21,12 @@ class Group extends Service {
     return super.put(`group/${opts.id}${synchronized}`, groupData, etag);
   }
 
-  async del(opt) {
-    return super.del(`group/${opt.id}`);
+  async del(opts) {
+    let synchronized = '';
+    if (opts.sync !== undefined && opts.sync === true) {
+      synchronized = '?synchronized';
+    }
+    return super.del(`group/${opts.id}${synchronized}`);
   }
 
   exchangeEnable(opt) {
@@ -33,8 +37,12 @@ class Group extends Service {
     return super.get(`group/${opt.id}/history`);
   }
 
-  move(opt) {
-    return super.put(`groupMove/${opt.id}?newstem=${opt.newStem}`);
+  move(opts) {
+    let synchronized = '';
+    if (opts.sync !== undefined && opts.sync === true) {
+      synchronized = '&synchronized';
+    }
+    return super.put(`groupMove/${opts.id}?newstem=${opts.newStem}${synchronized}`);
   }
 }
 

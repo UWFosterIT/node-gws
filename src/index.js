@@ -83,6 +83,8 @@ const UWGWS = {
     );
 
     config.log = log4js.getLogger('node-gws');
+    const { default: got } = await import('got')
+    config.got = got;
 
     this.group = new Group(config);
     this.membership = new Membership(config);

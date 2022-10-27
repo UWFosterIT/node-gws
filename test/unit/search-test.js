@@ -54,7 +54,7 @@ describe('Search', () => {
 
       expect(result.statusCode).to.eql(200);
       expect(Array.isArray(result.data)).to.eql(true);
-      expect(result.data.length).to.be.greaterThan(6);
+      expect(result.data.length).to.be.greaterThan(5);
       directCount = result.data.length;
     });
 
@@ -67,7 +67,7 @@ describe('Search', () => {
 
       expect(result.statusCode).to.eql(200);
       expect(Array.isArray(result.data)).to.eql(true);
-      expect(result.data.length).to.be.greaterThan(9);
+      expect(result.data.length).to.be.greaterThan(8);
       expect(result.data.length).to.be.greaterThan(directCount);
     });
   });

@@ -31,14 +31,12 @@ let config = {
       key:  'path-to-local/key.key'
     }
     // s3: {
-    //   certBucket: 'uwfosterit.certs',
-    //   certKey:    'laps_cert.cer',
-    //   keyBucket:  'uwfosterit.certs',
-    //   keyKey:     'laps_cert.key'
+    //   certBucket: 'Your certificate bucket here',
+    //   certKey:    'Your certificate key here',
+    //   keyBucket:  'Your key bucket here',
+    //   keyKey:     'Your key key here'
     // }
   },
-  // cert:     '/home/gabugabu/.ssh/gabugabu.bschool.uwca.pem',
-  // key:      '/home/gabugabu/.ssh/gabugabu.bschool.key',
   logLevel: 'info'
 };
 

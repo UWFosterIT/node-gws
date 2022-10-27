@@ -11,15 +11,16 @@ class Membership extends Service {
   }
 
   add(opt) {
+    let netIdList = opt.netid;
     if (Array.isArray(opt.netid)) {
-      opt.netid = opt.netid.join(',');
+      netIdList = opt.netid.join(',');
     }
     let synchronized = '';
     if (opt.sync !== undefined && opt.sync === true) {
       synchronized = '?synchronized';
     }
 
-    return super.put(`group/${opt.id}/member/${opt.netid}${synchronized}`);
+    return super.put(`group/${opt.id}/member/${netIdList}${synchronized}`);
   }
 
   replaceMembership(opt) {
@@ -28,7 +29,7 @@ class Membership extends Service {
       synchronized = '?synchronized';
     }
 
-    return super.put(`group/${opt.id}/member/${synchronized}`, opt.data);
+    return super.put(`group/${opt.id}/member${synchronized}`, opt.data);
   }
 
   del(opt) {

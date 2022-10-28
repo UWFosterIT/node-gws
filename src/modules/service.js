@@ -83,17 +83,20 @@ class Service {
     }
 
     this.log.debug(`GET -- ${util.inspect(options.request.url, { depth: null })}`);
-    response = await this.got.get(options.request)
-      .catch((err) => {
-        if (!err.response) {
-          this.log.error(`${err.name}: ${err.message}`);
-          throw new Error('Unable to make GET request');
-        }
-        return err.response;
-      });
 
-    if (this.config.cacheMode === 'record' && !response.body.errors) {
-      this.cache.write(options.uriCache, response.body, true);
+    if (!response.body) {
+      response = await this.got.get(options.request)
+        .catch((err) => {
+          if (!err.response) {
+            this.log.error(`${err.name}: ${err.message}`);
+            throw new Error('Unable to make GET request');
+          }
+          return err.response;
+        });
+
+      if (this.config.cacheMode === 'record' && !!response.body.errors) {
+        this.cache.write(options.uriCache, response.body, true);
+      }
     }
 
     return this.buildResult(response);
